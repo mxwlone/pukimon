@@ -7,6 +7,8 @@
     <string name="title_activity_new_entry">Neuer Event</string>
     <string name="time_format">HH:mm</string>
     <string name="date_format">dd.MM.yyyy</string>
+    <string name="date_time_format">dd.MM.yyyy HH:mm</string>
     <string name="buttonOkText">Ok</string>
     <string name="buttonCancelText">Abbrechen</string>
+    <string name="button_label_new_entry">Neuer Eintrag</string>
 </resources>

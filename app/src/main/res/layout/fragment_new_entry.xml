@@ -98,6 +98,7 @@
             android:layout_height="wrap_content"
             android:text="@string/buttonOkText"
             android:id="@+id/buttonOk"
+            android:onClick="okButtonClicked"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>

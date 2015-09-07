@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Pukimon</string>
+    <string name="action_settings">Settings</string>
+    <string name="textViewDateText">Date</string>
+    <string name="textViewTimeText">Time</string>
+    <string name="textViewAmountText">Amount</string>
+    <string name="title_activity_new_entry">New Event</string>
+    <string name="time_format">KK:mm a</string>
+    <string name="date_format">dd.MM.yyyy</string>
+    <string name="date_time_format">dd.MM.yyyy KK:mm a</string>
+    <string name="buttonOkText">Ok</string>
+    <string name="buttonCancelText">Cancel</string>
+    <string name="button_label_new_entry">New  entry</string>
+</resources>
