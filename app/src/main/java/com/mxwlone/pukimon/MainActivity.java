@@ -1,14 +1,10 @@
 package com.mxwlone.pukimon;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,27 +14,28 @@ import android.widget.SimpleCursorAdapter;
 import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
 
-public class MainActivity extends Activity
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends Activity {
 
     final String TAG = this.getClass().getSimpleName().toString();
 
     ListView mListView;
+    Cursor mCursor = null;
     SimpleCursorAdapter mAdapter;
-    static final String[] PROJECTION = new String[] {
+    String[] PROJECTION = {
             DrinkEventEntry._ID,
             DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
             DrinkEventEntry.COLUMN_NAME_AMOUNT,
     };
-    static final String SORT_ORDER = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
+    String SORT_ORDER = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mListView = (ListView) findViewById(R.id.listView);
+        updateCursor();
 
+        mListView = (ListView) findViewById(R.id.listView);
         String[] fromColumns = {
                 DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
                 DrinkEventEntry.COLUMN_NAME_AMOUNT,
@@ -49,49 +46,37 @@ public class MainActivity extends Activity
         };
 
         mAdapter = new SimpleCursorAdapter(this,
-                R.layout.list_item, null,
+                R.layout.list_item, mCursor,
                 fromColumns, toViews, 0);
         mListView.setAdapter(mAdapter);
-        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        debugDatabaseOutput();
+
+        updateCursor();
+        mAdapter.changeCursor(mCursor);
     }
 
-    private void debugDatabaseOutput() {
+    private void updateCursor() {
         PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String[] projection = {
-                DrinkEventEntry._ID,
-                DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
-                DrinkEventEntry.COLUMN_NAME_AMOUNT,
-        };
-        String sortOrder = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
-
-        Cursor cursor = db.query(
+        mCursor = db.query(
                 DrinkEventEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
+                PROJECTION,
+                null, null, null, null,
+                SORT_ORDER
         );
 
-//        cursor.moveToFirst();
-        while(cursor.moveToNext()) {
-            Long id = cursor.getLong(cursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
-            Long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));
-            Long amount = cursor.getLong(cursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_AMOUNT));
-
-            Log.d(TAG, String.format("id: %d\ntimestamp: %d\namount: %d\n\n", id, timestamp, amount));
-        }
-
-
+//        while(mCursor.moveToNext()) {
+//            Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
+//            Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));
+//            Long amount = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_AMOUNT));
+//
+//            Log.d(TAG, String.format("id: %d\ntimestamp: %d\namount: %d\n\n", id, timestamp, amount));
+//        }
     }
 
     public void showNewEntryActivity(View view) {
@@ -125,18 +110,4 @@ public class MainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, null, PROJECTION, null, null, SORT_ORDER);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-    }
 }

@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="@string/textViewDateText"
+            android:text="@string/text_view_date_text"
             android:id="@+id/textViewDate"
             android:inputType="none"
             android:textSize="20sp" />
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="@string/textViewTimeText"
+            android:text="@string/text_view_time_text"
             android:id="@+id/textViewTime"
             android:inputType="none"
             android:textSize="20sp" />
@@ -65,7 +65,7 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="@string/textViewAmountText"
+            android:text="@string/text_view_amount_text"
             android:id="@+id/textViewAmount"
             android:inputType="none"
             android:textSize="20sp" />
@@ -89,14 +89,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buttonCancelText"
+            android:text="@string/button_cancel_text"
             android:onClick="cancelButtonClicked"
             android:id="@+id/buttonCancel" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buttonOkText"
+            android:text="@string/button_ok_text"
             android:id="@+id/buttonOk"
             android:onClick="okButtonClicked"
             android:layout_alignParentEnd="true" />

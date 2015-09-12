@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:id="@+id/list_item_timestamp"
-        android:layout_margin="@dimen/activity_horizontal_margin" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dp">
 
-    <TextView
+    <ImageView android:id="@+id/list_item_event_icon"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dp"
+        android:contentDescription="@string/content_description_event_icon"
+        android:src="@drawable/bottle" />
+
+    <TextView android:id="@+id/list_item_amount_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Amount"
-        android:id="@+id/list_item_amount"
-        android:layout_margin="@dimen/activity_horizontal_margin" />
-</LinearLayout>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/list_item_event_icon"
+        android:layout_alignParentEnd="true"
+        android:text="350 ml" />
+
+    <TextView android:id="@+id/list_item_time_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_below="@+id/list_item_amount_text"
+        android:layout_alignLeft="@id/list_item_amount_text"
+        android:text="16:30 Uhr" />
+
+
+</RelativeLayout>
