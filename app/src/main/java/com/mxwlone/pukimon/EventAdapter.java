@@ -1,7 +1,6 @@
 package com.mxwlone.pukimon;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,12 +60,12 @@ public class EventAdapter extends BaseAdapter {
         Event event = mEvents.get(position);
 
         if (event instanceof DrinkEvent) {
-            SimpleDateFormat timeFormat = new SimpleDateFormat(parent.getContext().getResources().getString(R.string.time_format));
-            Log.d(TAG, "timeFormat: " + timeFormat);
+            SimpleDateFormat timeFormat = new SimpleDateFormat(parent.getContext().getResources().getString(R.string.date_time_format));
             String timeString = timeFormat.format(event.getDate());
 
             holder.timeText.setText(timeString);
-            holder.amountText.setText(((DrinkEvent) event).getAmount());
+            int amount = ((DrinkEvent) event).getAmount();
+            holder.amountText.setText(String.valueOf(amount) + " ml");
             holder.eventIcon.setImageResource(R.drawable.bottle);
         }
 

@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -20,63 +24,66 @@ public class MainActivity extends Activity {
 
     ListView mListView;
     Cursor mCursor = null;
-    SimpleCursorAdapter mAdapter;
-    String[] PROJECTION = {
-            DrinkEventEntry._ID,
-            DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
-            DrinkEventEntry.COLUMN_NAME_AMOUNT,
-    };
-    String SORT_ORDER = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
+    EventAdapter mAdapter;
+    List<Event> mEvents = new ArrayList<Event>();
+//    SimpleCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        updateCursor();
-
+        mAdapter = new EventAdapter(this, mEvents);
         mListView = (ListView) findViewById(R.id.listView);
-        String[] fromColumns = {
-                DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
-                DrinkEventEntry.COLUMN_NAME_AMOUNT,
-        };
-        int[] toViews = {
-                R.id.list_item_timestamp,
-                R.id.list_item_amount,
-        };
-
-        mAdapter = new SimpleCursorAdapter(this,
-                R.layout.list_item, mCursor,
-                fromColumns, toViews, 0);
         mListView.setAdapter(mAdapter);
+
+        updateList();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        updateCursor();
-        mAdapter.changeCursor(mCursor);
+        updateList();
     }
 
-    private void updateCursor() {
+    private void updateList() {
         PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        String[] projection = {
+                DrinkEventEntry._ID,
+                DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
+                DrinkEventEntry.COLUMN_NAME_AMOUNT,
+        };
+        String sortOrder = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
+
         mCursor = db.query(
                 DrinkEventEntry.TABLE_NAME,
-                PROJECTION,
+                projection,
                 null, null, null, null,
-                SORT_ORDER
+                sortOrder
         );
 
-//        while(mCursor.moveToNext()) {
-//            Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
-//            Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));
-//            Long amount = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_AMOUNT));
-//
-//            Log.d(TAG, String.format("id: %d\ntimestamp: %d\namount: %d\n\n", id, timestamp, amount));
-//        }
+        mEvents.clear();
+        while(mCursor.moveToNext()) {
+            Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
+            Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));
+            int amount = mCursor.getInt(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_AMOUNT));
+
+            DrinkEvent drinkEvent = new DrinkEvent();
+            drinkEvent.setAmount(amount);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timestamp);
+            drinkEvent.setDate(calendar.getTime());
+
+            mEvents.add(drinkEvent);
+
+            Log.d(TAG, String.format("id: %d\nDate: %s\namount: %d\n\n", id, drinkEvent.getDate().toString(), drinkEvent.getAmount()));
+        }
+
+        mAdapter.notifyDataSetChanged();
     }
 
     public void showNewEntryActivity(View view) {
@@ -105,6 +112,7 @@ public class MainActivity extends Activity {
             PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             dbHelper.clearDatabase(db);
+            updateList();
         }
 
         return super.onOptionsItemSelected(item);
