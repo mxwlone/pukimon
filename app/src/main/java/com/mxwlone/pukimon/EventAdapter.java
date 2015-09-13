@@ -73,7 +73,7 @@ public class EventAdapter extends BaseAdapter {
             DrinkEvent drinkEvent = (DrinkEvent) event;
             int amount = drinkEvent.getAmount();
             amountString = String.valueOf(amount) + " ml";
-            timeString = dateTimeFormat.format(drinkEvent.getDate());
+            timeString = dateTimeFormat.format(drinkEvent.getDate()) + " " + "Uhr";
             iconResource = R.drawable.bottle;
         } else if (event instanceof SleepEvent) {
             SleepEvent sleepEvent = (SleepEvent) event;
@@ -83,14 +83,16 @@ public class EventAdapter extends BaseAdapter {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 
             String hoursString = hours != 0 ?
-                    hours == 1 ? String.format("%d Stunde ", hours) :
-                            String.format("%d Stunden ", hours) : "";
+                    hours == 1 ? String.format("%d Stunde" + " ", hours) :
+                            String.format("%d Stunden" + " ", hours) :
+                    "";
             String minutesString = minutes != 0 ?
-                    minutes == 1 ? String.format(" %d Minute ", minutes) :
-                            String.format("%d Minuten ", minutes) : "";
+                    minutes == 1 ? String.format("%d Minute", minutes) :
+                            String.format("%d Minuten", minutes)
+                    : hours != 0 ? "" : String.format("%d Minuten", minutes);
             amountString = hoursString + minutesString;
 
-            timeString = dateTimeFormat.format(sleepEvent.getFromDate()) + " - " + timeFormat.format(sleepEvent.getToDate());
+            timeString = dateTimeFormat.format(sleepEvent.getFromDate()) + " - " + timeFormat.format(sleepEvent.getToDate()) + " " + "Uhr";
             holder.timeText.setText(timeString);
             iconResource = R.drawable.sleep;
         }

@@ -74,8 +74,8 @@ public class MainActivity extends Activity {
         SleepEvent sleepEvent = new SleepEvent();
         Calendar cal = Calendar.getInstance();
         sleepEvent.setFromDate(cal.getTime());
-        cal.add(Calendar.HOUR_OF_DAY, 1);
-        cal.add(Calendar.MINUTE, 10);
+        cal.add(Calendar.HOUR_OF_DAY, 2);
+        cal.add(Calendar.MINUTE, 37);
         sleepEvent.setToDate(cal.getTime());
         mEvents.add(sleepEvent);
 
