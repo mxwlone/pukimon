@@ -12,4 +12,11 @@
     <string name="button_cancel_text">Abbrechen</string>
     <string name="button_label_new_entry">Neuer Eintrag</string>
     <string name="content_description_event_icon">Event icon</string>
+    <string name="title_activity_new_entry_tabbed">Neuer Eintrag</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="button_label_new_tab_entry">New tab entry</string>
+    <string name="text_view_from_time_text">Von</string>
+    <string name="text_view_to_time_text">Bis</string>
 </resources>

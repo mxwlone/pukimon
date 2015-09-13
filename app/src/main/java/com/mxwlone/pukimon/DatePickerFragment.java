@@ -3,13 +3,9 @@ package com.mxwlone.pukimon;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,7 +33,10 @@ public class DatePickerFragment extends DialogFragment
         calendar.set(Calendar.DAY_OF_MONTH, day);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));
 
-        EditText editTextDate = (EditText) getActivity().findViewById(R.id.editTextDate);
-        editTextDate.setText(simpleDateFormat.format(calendar.getTime()));
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            EditText editTextDate = (EditText) getActivity().findViewById(bundle.getInt("view"));
+            editTextDate.setText(simpleDateFormat.format(calendar.getTime()));
+        }
     }
 }

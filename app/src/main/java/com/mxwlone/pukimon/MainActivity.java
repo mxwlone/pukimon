@@ -11,14 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.mxwlone.pukimon.domain.DrinkEvent;
 import com.mxwlone.pukimon.domain.Event;
-import com.mxwlone.pukimon.domain.SleepEvent;
 import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
+import com.mxwlone.pukimon.sql.PukimonContract.SleepEventEntry;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -54,46 +52,83 @@ public class MainActivity extends Activity {
         PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String[] projection = {
-                DrinkEventEntry._ID,
-                DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
-                DrinkEventEntry.COLUMN_NAME_AMOUNT,
-        };
-        String sortOrder = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
+//        String[] projection = {
+//                DrinkEventEntry._ID,
+//                DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
+//                DrinkEventEntry.COLUMN_NAME_AMOUNT,
+//        };
+//        String sortOrder = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
+//
+//        mCursor = db.query(
+//                DrinkEventEntry.TABLE_NAME,
+//                projection,
+//                null, null, null, null,
+//                sortOrder
+//        );
 
-        mCursor = db.query(
-                DrinkEventEntry.TABLE_NAME,
-                projection,
-                null, null, null, null,
-                sortOrder
-        );
+//        String[] projection = {
+//                SleepEventEntry._ID,
+//                SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM,
+//                SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO,
+//        };
+//        String sortOrder = SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM + " DESC";
+//
+//        mCursor = db.query(
+//                SleepEventEntry.TABLE_NAME,
+//                projection,
+//                null, null, null, null,
+//                sortOrder
+//        );
+
+        final String COMMA_SEP = ",";
+        String sql = "SELECT * FROM " + DrinkEventEntry.TABLE_NAME + COMMA_SEP + SleepEventEntry.TABLE_NAME;
+        mCursor = db.rawQuery(sql, null);
 
         mEvents.clear();
 
         // add test data
-        SleepEvent sleepEvent = new SleepEvent();
-        Calendar cal = Calendar.getInstance();
-        sleepEvent.setFromDate(cal.getTime());
-        cal.add(Calendar.HOUR_OF_DAY, 2);
-        cal.add(Calendar.MINUTE, 37);
-        sleepEvent.setToDate(cal.getTime());
-        mEvents.add(sleepEvent);
+//        SleepEvent sleepEvent = new SleepEvent();
+//        Calendar cal = Calendar.getInstance();
+//        sleepEvent.setFromDate(cal.getTime());
+//        cal.add(Calendar.HOUR_OF_DAY, 2);
+//        cal.add(Calendar.MINUTE, 37);
+//        sleepEvent.setToDate(cal.getTime());
+//        mEvents.add(sleepEvent);
+
+        Log.d(TAG, "Cursor content:");
 
         while(mCursor.moveToNext()) {
-            Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
-            Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));
-            int amount = mCursor.getInt(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_AMOUNT));
+            String[] columns = mCursor.getColumnNames();
 
-            DrinkEvent drinkEvent = new DrinkEvent();
-            drinkEvent.setAmount(amount);
+            for (String column : columns) {
+                Log.d(TAG, String.format("Column %s: %s", column, mCursor.getString(mCursor.getColumnIndexOrThrow(column))));
+            }
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(timestamp);
-            drinkEvent.setDate(calendar.getTime());
+//            Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
+//            Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));
+//            int amount = mCursor.getInt(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_AMOUNT));
+//
+//            DrinkEvent drinkEvent = new DrinkEvent();
+//            drinkEvent.setAmount(amount);
+//
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(timestamp);
+//            drinkEvent.setDate(calendar.getTime());
 
-            mEvents.add(drinkEvent);
-
-            Log.d(TAG, String.format("id: %d\nDate: %s\namount: %d\n\n", id, drinkEvent.getDate().toString(), drinkEvent.getAmount()));
+//            Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(SleepEventEntry._ID));
+//            Long fromTimestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM));
+//            Long toTimestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO));
+//
+//            SleepEvent sleepEvent = new SleepEvent();
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(fromTimestamp);
+//            sleepEvent.setFromDate(calendar.getTime());
+//            calendar.setTimeInMillis(toTimestamp);
+//            sleepEvent.setToDate(calendar.getTime());
+//
+//            mEvents.add(sleepEvent);
+//
+//            Log.d(TAG, String.format("id: %d\nfromDate: %s\ntoDate: %s\n\n", id, sleepEvent.getFromDate().toString(), sleepEvent.getToDate().toString()));
         }
 
         mAdapter.notifyDataSetChanged();
@@ -101,6 +136,11 @@ public class MainActivity extends Activity {
 
     public void showNewEntryActivity(View view) {
         Intent intent = new Intent(this, NewEntryActivity.class);
+        startActivity(intent);
+    }
+
+    public void showNewEntryTabbedActivity(View view) {
+        Intent intent = new Intent(this, NewEntryTabbedActivity.class);
         startActivity(intent);
     }
 

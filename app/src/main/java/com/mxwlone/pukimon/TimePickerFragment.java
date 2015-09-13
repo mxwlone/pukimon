@@ -2,21 +2,14 @@ package com.mxwlone.pukimon;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.os.Debug;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
@@ -40,7 +33,10 @@ public class TimePickerFragment extends DialogFragment
         calendar.set(Calendar.MINUTE, minute);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getResources().getString(R.string.time_format));
 
-        EditText editTextTime = (EditText) getActivity().findViewById(R.id.editTextTime);
-        editTextTime.setText(simpleDateFormat.format(calendar.getTime()));
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            EditText editTextTime = (EditText) getActivity().findViewById(bundle.getInt("view"));
+            editTextTime.setText(simpleDateFormat.format(calendar.getTime()));
+        }
     }
 }

@@ -16,39 +16,45 @@ public class PukimonDbHelper extends SQLiteOpenHelper {
     final String TAG = this.getClass().getSimpleName();
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Pukimon.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String CREATE_TABLE_DRINK_EVENT_ENTRY =
             "CREATE TABLE " + DrinkEventEntry.TABLE_NAME + " (" +
                     DrinkEventEntry._ID + " INTEGER PRIMARY KEY," +
                     DrinkEventEntry.COLUMN_NAME_TIMESTAMP + INTEGER_TYPE + COMMA_SEP +
                     DrinkEventEntry.COLUMN_NAME_AMOUNT + INTEGER_TYPE +
-                    " );" + System.getProperty("line.separator") +
+                    " );";
+    private static final String CREATE_TABLE_SLEEP_EVENT_ENTRY =
             "CREATE TABLE " + SleepEventEntry.TABLE_NAME + " (" +
                     SleepEventEntry._ID + " INTEGER PRIMARY KEY," +
                     SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM + INTEGER_TYPE + COMMA_SEP +
-                    SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO + INTEGER_TYPE + COMMA_SEP +
+                    SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO + INTEGER_TYPE +
                     " );";
 
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + DrinkEventEntry.TABLE_NAME + "; " + System.getProperty("line.separator") +
+    private static final String DROP_TABLE_DRINK_EVENT_ENTRY =
+            "DROP TABLE IF EXISTS " + DrinkEventEntry.TABLE_NAME + "; ";
+    private static final String DROP_TABLE_SLEEP_EVENT_ENTRY =
             "DROP TABLE IF EXISTS " + SleepEventEntry.TABLE_NAME + "; ";
 
     public PukimonDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
-        Log.d(TAG, SQL_CREATE_ENTRIES);
-        db.execSQL(SQL_CREATE_ENTRIES);
+        Log.d(TAG, CREATE_TABLE_DRINK_EVENT_ENTRY);
+        db.execSQL(CREATE_TABLE_DRINK_EVENT_ENTRY);
+
+        Log.d(TAG, CREATE_TABLE_SLEEP_EVENT_ENTRY);
+        db.execSQL(CREATE_TABLE_SLEEP_EVENT_ENTRY);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES);
+        Log.d(TAG, DROP_TABLE_DRINK_EVENT_ENTRY);
+        db.execSQL(DROP_TABLE_DRINK_EVENT_ENTRY);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -56,8 +62,11 @@ public class PukimonDbHelper extends SQLiteOpenHelper {
     }
 
     public void clearDatabase(SQLiteDatabase db) {
-        Log.d(TAG, SQL_DELETE_ENTRIES);
-        db.execSQL(SQL_DELETE_ENTRIES);
+        Log.d(TAG, DROP_TABLE_DRINK_EVENT_ENTRY);
+        db.execSQL(DROP_TABLE_DRINK_EVENT_ENTRY);
+
+        Log.d(TAG, DROP_TABLE_SLEEP_EVENT_ENTRY);
+        db.execSQL(DROP_TABLE_SLEEP_EVENT_ENTRY);
         onCreate(db);
     }
 }

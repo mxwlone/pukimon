@@ -19,9 +19,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Deprecated
 public class NewEntryActivity extends Activity {
 
-    final String TAG = this.getClass().getSimpleName().toString();
+    final String TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +30,8 @@ public class NewEntryActivity extends Activity {
         setContentView(R.layout.activity_new_entry);
     }
 
-    public void okButtonClicked(View view) {
-        EditText editTextDate = (EditText) findViewById(R.id.editTextDate);
+    public void okButtonClickedFromDrinkEntry(View view) {
+        EditText editTextDate = (EditText) findViewById(R.id.drinkEntryEditTextDate);
         String dateString = editTextDate.getText().toString();
         EditText editTextTime = (EditText) findViewById(R.id.editTextTime);
         String timeString = editTextTime.getText().toString();

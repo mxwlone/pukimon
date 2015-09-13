@@ -24,6 +24,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mxwlone.pukimon.NewEntryActivity" />
         </activity>
+        <activity
+            android:name=".NewEntryTabbedActivity"
+            android:label="@string/title_activity_new_entry_tabbed"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mxwlone.pukimon.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
