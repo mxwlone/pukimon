@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.mxwlone.pukimon.domain.DrinkEvent;
+import com.mxwlone.pukimon.domain.Event;
+import com.mxwlone.pukimon.domain.SleepEvent;
 import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
 
@@ -20,7 +23,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    final String TAG = this.getClass().getSimpleName().toString();
+    final String TAG = this.getClass().getSimpleName();
 
     ListView mListView;
     Cursor mCursor = null;
@@ -66,6 +69,16 @@ public class MainActivity extends Activity {
         );
 
         mEvents.clear();
+
+        // add test data
+        SleepEvent sleepEvent = new SleepEvent();
+        Calendar cal = Calendar.getInstance();
+        sleepEvent.setFromDate(cal.getTime());
+        cal.add(Calendar.HOUR_OF_DAY, 1);
+        cal.add(Calendar.MINUTE, 10);
+        sleepEvent.setToDate(cal.getTime());
+        mEvents.add(sleepEvent);
+
         while(mCursor.moveToNext()) {
             Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
             Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));

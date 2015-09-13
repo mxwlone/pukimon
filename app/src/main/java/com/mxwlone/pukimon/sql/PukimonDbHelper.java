@@ -3,15 +3,20 @@ package com.mxwlone.pukimon.sql;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
+import com.mxwlone.pukimon.sql.PukimonContract.SleepEventEntry;
 
 /**
  * Created by maxwel on 9/7/2015.
  */
 public class PukimonDbHelper extends SQLiteOpenHelper {
+
+    final String TAG = this.getClass().getSimpleName();
+
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Pukimon.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -20,18 +25,24 @@ public class PukimonDbHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + DrinkEventEntry.TABLE_NAME + " (" +
                     DrinkEventEntry._ID + " INTEGER PRIMARY KEY," +
-//                        DrinkEventEntry.COLUMN_NAME_ID + TEXT_TYPE + COMMA_SEP +
                     DrinkEventEntry.COLUMN_NAME_TIMESTAMP + INTEGER_TYPE + COMMA_SEP +
                     DrinkEventEntry.COLUMN_NAME_AMOUNT + INTEGER_TYPE +
-                    " )";
+                    " );" + System.getProperty("line.separator") +
+            "CREATE TABLE " + SleepEventEntry.TABLE_NAME + " (" +
+                    SleepEventEntry._ID + " INTEGER PRIMARY KEY," +
+                    SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM + INTEGER_TYPE + COMMA_SEP +
+                    SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO + INTEGER_TYPE + COMMA_SEP +
+                    " );";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + DrinkEventEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + DrinkEventEntry.TABLE_NAME + "; " + System.getProperty("line.separator") +
+            "DROP TABLE IF EXISTS " + SleepEventEntry.TABLE_NAME + "; ";
 
     public PukimonDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
+        Log.d(TAG, SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -45,6 +56,7 @@ public class PukimonDbHelper extends SQLiteOpenHelper {
     }
 
     public void clearDatabase(SQLiteDatabase db) {
+        Log.d(TAG, SQL_DELETE_ENTRIES);
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }

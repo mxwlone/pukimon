@@ -12,9 +12,14 @@ public final class PukimonContract {
 
     public static abstract class DrinkEventEntry implements BaseColumns {
         public static final String TABLE_NAME = "drink_event_entry";
-//        public static final String COLUMN_NAME_ID = "id";
         public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
         public static final String COLUMN_NAME_AMOUNT = "amount";
+    }
+
+    public static abstract class SleepEventEntry implements BaseColumns {
+        public static final String TABLE_NAME = "sleep_event_entry";
+        public static final String COLUMN_NAME_TIMESTAMP_FROM = "timestamp_from";
+        public static final String COLUMN_NAME_TIMESTAMP_TO = "timestamp_until";
     }
 
 }
