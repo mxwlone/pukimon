@@ -7,9 +7,16 @@ import java.util.Date;
  */
 public class DrinkEvent extends Event {
 
+    private Date date;
     private int amount;
 
-    private Date date;
+    public DrinkEvent(Date date, int amount) {
+        this.date = date;
+        this.amount = amount;
+    }
+
+    public DrinkEvent() {
+    }
 
     public Date getDate() {
         return date;

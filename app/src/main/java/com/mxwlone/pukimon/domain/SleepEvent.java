@@ -9,6 +9,14 @@ public class SleepEvent extends Event {
 
     private Date fromDate, toDate;
 
+    public SleepEvent(Date fromDate, Date toDate) {
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+    }
+
+    public SleepEvent() {
+    }
+
     public Date getToDate() {
         return toDate;
     }
