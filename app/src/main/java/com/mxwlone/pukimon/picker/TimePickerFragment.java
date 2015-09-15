@@ -9,6 +9,7 @@ import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 //TODO when time was changed and user wants to change it again, set the picker to the previously set time
@@ -16,15 +17,17 @@ import java.util.Locale;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
-    Locale LOCALE;
-    DateFormat TIME_FORMAT;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LOCALE = getResources().getConfiguration().locale;
-        TIME_FORMAT = DateFormat.getTimeInstance(DateFormat.SHORT, LOCALE);
+        Date date = null;
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey("date"))
+                date = new Date(bundle.getLong("date"));
+        }
 
-        final Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        if (date != null) c.setTime(date);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
@@ -43,8 +46,10 @@ public class TimePickerFragment extends DialogFragment
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            EditText editTextTime = (EditText) getActivity().findViewById(bundle.getInt("view"));
-            editTextTime.setText(timeFormat.format(calendar.getTime()));
+            if (bundle.containsKey("view")) {
+                EditText editTextTime = (EditText) getActivity().findViewById(bundle.getInt("view"));
+                editTextTime.setText(timeFormat.format(calendar.getTime()));
+            }
         }
     }
 }

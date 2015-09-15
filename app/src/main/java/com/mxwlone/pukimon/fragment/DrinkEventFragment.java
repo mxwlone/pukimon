@@ -95,7 +95,7 @@ public class DrinkEventFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     DialogFragment dialogFragment = new DatePickerFragment();
-                    Bundle bundle = new Bundle();
+                    Bundle bundle = getArguments();
                     bundle.putInt("view", R.id.drinkEventEditTextDate);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "datePicker");
@@ -109,7 +109,7 @@ public class DrinkEventFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     DialogFragment dialogFragment = new TimePickerFragment();
-                    Bundle bundle = new Bundle();
+                    Bundle bundle = getArguments();
                     bundle.putInt("view", R.id.editTextTime);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "timePicker");
