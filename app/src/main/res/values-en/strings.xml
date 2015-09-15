@@ -4,11 +4,12 @@
     <string name="text_view_date_text">Date</string>
     <string name="text_view_time_text">Time</string>
     <string name="text_view_amount_text">Amount</string>
-    <string name="title_activity_new_entry">New Event</string>
+    <string name="title_activity_new_entry">New entry</string>
     <string name="time_format">KK:mm a</string>
     <string name="date_format">dd.MM.yyyy</string>
     <string name="date_time_format">dd.MM.yyyy KK:mm a</string>
     <string name="button_ok_text">OK</string>
     <string name="button_cancel_text">Cancel</string>
     <string name="button_label_new_entry">New  entry</string>
+    <string name="title_update_entry">Update entry</string>
 </resources>

@@ -5,28 +5,22 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.mxwlone.pukimon.sql.PukimonContract;
-import com.mxwlone.pukimon.sql.PukimonDbHelper;
+import com.mxwlone.pukimon.domain.DrinkEvent;
+import com.mxwlone.pukimon.domain.SleepEvent;
+import com.mxwlone.pukimon.fragment.DrinkEventFragment;
+import com.mxwlone.pukimon.fragment.SleepEventFragment;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
-public class NewEntryTabbedActivity extends Activity implements ActionBar.TabListener {
+public class NewEventActivity extends Activity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -45,97 +39,46 @@ public class NewEntryTabbedActivity extends Activity implements ActionBar.TabLis
 
     final String TAG = this.getClass().getSimpleName();
 
-    public void cancelButtonClicked(View view) {
-        finish();
-    }
-
-    public void okButtonClickedFromSleepEntry(View view) {
-        EditText editTextDate = (EditText) findViewById(R.id.sleepEntryEditTextDate);
-        String dateString = editTextDate.getText().toString();
-        EditText editTextFromTime = (EditText) findViewById(R.id.editTextFromTime);
-        String fromTimeString = editTextFromTime.getText().toString();
-        EditText editTextToTime = (EditText) findViewById(R.id.editTextToTime);
-        String toTimeString = editTextToTime.getText().toString();
-
-        Log.d(TAG, "dateString: " + dateString);
-        Log.d(TAG, "fromTimeString: " + fromTimeString);
-        Log.d(TAG, "toTimeString: " + toTimeString);
-
-        Date fromDate = null, toDate = null;
-        try {
-            //TODO refactor: use DateFormat.getDateTimeInstance(DateFormat.DEFAULT, currentLocale) http://docs.oracle.com/javase/tutorial/i18n/format/dateFormat.html
-            SimpleDateFormat dateTimeFormat = new SimpleDateFormat(getResources().getString(R.string.date_time_format), getResources().getConfiguration().locale);
-            fromDate = dateTimeFormat.parse(dateString + " " + fromTimeString);
-            toDate = dateTimeFormat.parse(dateString + " " + toTimeString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        if (fromDate == null || toDate == null) {
-            Toast.makeText(getApplicationContext(), "Unparseable date", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        ContentValues values = new ContentValues();
-        values.put(PukimonContract.SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM, fromDate.getTime());
-        values.put(PukimonContract.SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO, toDate.getTime());
-
-        PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long newRowId = db.insert(PukimonContract.SleepEventEntry.TABLE_NAME, null, values);
-        if (newRowId == -1) {
-            Toast.makeText(getApplicationContext(), "Database insert failed", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        finish();
-    }
-
-    public void okButtonClickedFromDrinkEntry(View view) {
-        EditText editTextDate = (EditText) findViewById(R.id.drinkEntryEditTextDate);
-        String dateString = editTextDate.getText().toString();
-        EditText editTextTime = (EditText) findViewById(R.id.editTextTime);
-        String timeString = editTextTime.getText().toString();
-        EditText editTextAmount = (EditText) findViewById(R.id.editTextAmount);
-        String amountString = editTextAmount.getText().toString();
-
-        Log.d(TAG, "dateString: " + dateString);
-        Log.d(TAG, "timeString: " + timeString);
-        Log.d(TAG, "amountString: " + amountString);
-
-        Date date = null;
-        try {
-            //TODO refactor: use DateFormat.getDateTimeInstance(DateFormat.DEFAULT, currentLocale) http://docs.oracle.com/javase/tutorial/i18n/format/dateFormat.html
-            SimpleDateFormat dateTimeFormat = new SimpleDateFormat(getResources().getString(R.string.date_time_format), getResources().getConfiguration().locale);
-            date = dateTimeFormat.parse(dateString + " " + timeString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        if (date == null) {
-            Toast.makeText(getApplicationContext(), "Unparseable date", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        ContentValues values = new ContentValues();
-        values.put(PukimonContract.DrinkEventEntry.COLUMN_NAME_TIMESTAMP, date.getTime());
-        values.put(PukimonContract.DrinkEventEntry.COLUMN_NAME_AMOUNT, amountString);
-
-        PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long newRowId = db.insert(PukimonContract.DrinkEventEntry.TABLE_NAME, null, values);
-        if (newRowId == -1) {
-            Toast.makeText(getApplicationContext(), "Database insert failed", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        finish();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_entry_tabbed);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey("eventType")) {
+                getActionBar().setTitle(R.string.title_update_entry);
+
+                if (extras.getString("eventType", null).equals(DrinkEvent.class.toString())) {
+                    DrinkEventFragment fragment = new DrinkEventFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putLong("id", extras.containsKey("id") ? extras.getLong("id") : 0);
+//                    bundle.putString("date", extras.containsKey("date") ? extras.getString("date") : null);
+//                    bundle.putInt("amount", extras.containsKey("amount") ? extras.getInt("amount") : 0);
+                    fragment.setArguments(extras);
+
+                    setContentView(R.layout.fragment_placeholder_event_update);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_placeholder, fragment);
+                    ft.commit();
+                    return;
+                } else if (extras.getString("eventType", null).equals(SleepEvent.class.toString())) {
+                    SleepEventFragment fragment = new SleepEventFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putLong("id", extras.containsKey("id") ? extras.getLong("id") : 0);
+//                    bundle.putString("fromDate", extras.containsKey("fromDate") ? extras.getString("fromDate") : null);
+//                    bundle.putString("toDate", extras.containsKey("toDate") ? extras.getString("toDate") : null);
+                    fragment.setArguments(extras);
+
+                    setContentView(R.layout.fragment_placeholder_event_update);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_placeholder, fragment);
+                    ft.commit();
+                    return;
+                }
+            }
+        }
+
+        setContentView(R.layout.activity_new_event);
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -172,11 +115,22 @@ public class NewEntryTabbedActivity extends Activity implements ActionBar.TabLis
         }
     }
 
+    public void cancelButtonClicked(View view) {
+        finish();
+    }
+
+    public void saveSleepEvent(View view) {
+        Util.saveSleepEvent(this, TAG);
+    }
+
+    public void saveDrinkEvent(View view) {
+        Util.saveDrinkEvent(this, TAG);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_entry_tabbed, menu);
+        getMenuInflater().inflate(R.menu.menu_new_event, menu);
         return true;
     }
 
@@ -225,9 +179,9 @@ public class NewEntryTabbedActivity extends Activity implements ActionBar.TabLis
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0)
-                return DrinkEntryFragment.newInstance(position);
+                return DrinkEventFragment.newInstance();
             else
-                return SleepEntryFragment.newInstance(position);
+                return SleepEventFragment.newInstance();
         }
 
         @Override

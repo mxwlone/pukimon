@@ -16,7 +16,6 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="@string/text_view_date_text"
-            android:id="@+id/drinkEntryTextViewDate"
             android:inputType="none"
             android:textSize="20sp" />
 
@@ -25,7 +24,7 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:ems="10"
-            android:id="@+id/drinkEntryEditTextDate"
+            android:id="@+id/drinkEventEditTextDate"
             android:editable="false" />
     </LinearLayout>
 
@@ -41,7 +40,6 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="@string/text_view_time_text"
-            android:id="@+id/textViewTime"
             android:inputType="none"
             android:textSize="20sp" />
 
@@ -66,7 +64,6 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="@string/text_view_amount_text"
-            android:id="@+id/textViewAmount"
             android:inputType="none"
             android:textSize="20sp" />
 
@@ -92,11 +89,10 @@
             android:text="@string/button_cancel_text"
             android:onClick="cancelButtonClicked"/>
 
-        <Button
+        <Button android:id="@+id/drinkEventOkButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_ok_text"
-            android:onClick="okButtonClickedFromDrinkEntry"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>

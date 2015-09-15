@@ -7,17 +7,32 @@ import java.util.Date;
  */
 public abstract class Event implements Comparable<Event> {
 
+    Long id;
+
+    public Event(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
     @Override
     public int compareTo(Event another) {
 
         Date thisDate, anotherDate;
 
         thisDate = (this instanceof DrinkEvent) ? ((DrinkEvent)this).getDate() :
-                this instanceof SleepEvent ? ((SleepEvent)this).getFromDate() :
+                this instanceof SleepEvent ? ((SleepEvent)this).getToDate() :
                         null;
 
         anotherDate = (another instanceof DrinkEvent) ? ((DrinkEvent)another).getDate() :
-                (another instanceof SleepEvent) ? ((SleepEvent)another).getFromDate() :
+                (another instanceof SleepEvent) ? ((SleepEvent)another).getToDate() :
                         null;
 
         if (thisDate == null || anotherDate == null)

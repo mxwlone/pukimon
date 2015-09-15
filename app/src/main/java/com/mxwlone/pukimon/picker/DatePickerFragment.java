@@ -1,4 +1,4 @@
-package com.mxwlone.pukimon;
+package com.mxwlone.pukimon.picker;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+
+//TODO when date was changed and user wants to change it again, set the picker to the previously set date
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
@@ -31,12 +34,13 @@ public class DatePickerFragment extends DialogFragment
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));
+        Locale locale = getResources().getConfiguration().locale;
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, locale);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             EditText editTextDate = (EditText) getActivity().findViewById(bundle.getInt("view"));
-            editTextDate.setText(simpleDateFormat.format(calendar.getTime()));
+            editTextDate.setText(dateFormat.format(calendar.getTime()));
         }
     }
 }

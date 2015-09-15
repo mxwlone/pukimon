@@ -17,15 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewEntryActivity"
-            android:label="@string/title_activity_new_entry"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mxwlone.pukimon.NewEntryActivity" />
-        </activity>
-        <activity
-            android:name=".NewEntryTabbedActivity"
+            android:name=".NewEventActivity"
             android:label="@string/title_activity_new_entry_tabbed"
             android:parentActivityName=".MainActivity" >
             <meta-data

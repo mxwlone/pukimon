@@ -10,12 +10,8 @@ public class DrinkEvent extends Event {
     private Date date;
     private int amount;
 
-    public DrinkEvent(Date date, int amount) {
-        this.date = date;
-        this.amount = amount;
-    }
-
-    public DrinkEvent() {
+    public DrinkEvent(long id) {
+        super(id);
     }
 
     public Date getDate() {

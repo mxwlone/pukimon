@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mxwlone.pukimon.domain.DrinkEvent;
@@ -42,7 +43,28 @@ public class MainActivity extends Activity {
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
 
-        updateList();
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Event event = mEvents.get(position);
+                Log.d(TAG, String.format("%s id: %d", event.getClass().getSimpleName(), event.getId()));
+
+                Intent intent = new Intent(parent.getContext(), NewEventActivity.class);
+                intent.putExtra("eventType", event.getClass().toString());
+
+                if (event instanceof DrinkEvent) {
+                    intent.putExtra("id", event.getId());
+                    intent.putExtra("date", ((DrinkEvent) event).getDate().getTime());
+                    intent.putExtra("amount", ((DrinkEvent) event).getAmount());
+                } else if (event instanceof SleepEvent) {
+                    intent.putExtra("id", event.getId());
+                    intent.putExtra("fromDate", ((SleepEvent) event).getFromDate().getTime());
+                    intent.putExtra("toDate", ((SleepEvent) event).getToDate().getTime());
+                }
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -84,6 +106,13 @@ public class MainActivity extends Activity {
         querySleepEventEntry(db);
 
         Collections.sort(mEvents);
+
+        // debug
+        Log.d(TAG, "Order after sort:");
+        for (Event event : mEvents) {
+            Log.d(TAG, String.format("%s id: %d", event.getClass().getSimpleName(), event.getId()));
+        }
+
         mAdapter.notifyDataSetChanged();
     }
 
@@ -109,14 +138,14 @@ public class MainActivity extends Activity {
                 Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));
                 int amount = mCursor.getInt(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_AMOUNT));
 
-                DrinkEvent drinkEvent = new DrinkEvent();
+                DrinkEvent drinkEvent = new DrinkEvent(id);
                 drinkEvent.setAmount(amount);
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(timestamp);
                 drinkEvent.setDate(calendar.getTime());
 
-                Log.d(TAG, String.format("SleepEventEntry id: %d\tdate: %s\tamount: %s" +
+                Log.d(TAG, String.format("DrinkEventEntry id: %d\tdate: %s\tamount: %s" +
                                 System.getProperty("line.separator"),
                         id, drinkEvent.getDate().toString(), drinkEvent.getAmount()));
                 mEvents.add(drinkEvent);
@@ -146,7 +175,7 @@ public class MainActivity extends Activity {
                 Long fromTimestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM));
                 Long toTimestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO));
 
-                SleepEvent sleepEvent = new SleepEvent();
+                SleepEvent sleepEvent = new SleepEvent(id);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(fromTimestamp);
                 sleepEvent.setFromDate(calendar.getTime());
@@ -161,13 +190,8 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void showNewEntryActivity(View view) {
-        Intent intent = new Intent(this, NewEntryActivity.class);
-        startActivity(intent);
-    }
-
-    public void showNewEntryTabbedActivity(View view) {
-        Intent intent = new Intent(this, NewEntryTabbedActivity.class);
+    public void startNewEventActivity(View view) {
+        Intent intent = new Intent(this, NewEventActivity.class);
         startActivity(intent);
     }
 

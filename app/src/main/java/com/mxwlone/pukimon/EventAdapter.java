@@ -1,7 +1,6 @@
 package com.mxwlone.pukimon;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,9 @@ import com.mxwlone.pukimon.domain.DrinkEvent;
 import com.mxwlone.pukimon.domain.Event;
 import com.mxwlone.pukimon.domain.SleepEvent;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,9 +27,17 @@ public class EventAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Event> mEvents;
 
+    Locale LOCALE;
+    DateFormat TIME_FORMAT, DATE_FORMAT, DATE_TIME_FORMAT;
+
     public EventAdapter(Context context, List<Event> events) {
         mInflater = LayoutInflater.from(context);
         mEvents = events;
+
+        LOCALE = context.getResources().getConfiguration().locale;
+        TIME_FORMAT = DateFormat.getTimeInstance(DateFormat.SHORT, LOCALE);
+        DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT, LOCALE);
+        DATE_TIME_FORMAT = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, LOCALE);
     }
 
     @Override
@@ -65,10 +73,6 @@ public class EventAdapter extends BaseAdapter {
         }
 
         Event event = mEvents.get(position);
-        Resources resources = parent.getContext().getResources();
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(parent.getContext().getResources().getString(R.string.date_time_format));
-        SimpleDateFormat dateFormat = new SimpleDateFormat(parent.getContext().getResources().getString(R.string.date_format));
-        SimpleDateFormat timeFormat = new SimpleDateFormat(parent.getContext().getResources().getString(R.string.time_format));
 
         String amountString = "";
         String timeString = "";
@@ -79,8 +83,8 @@ public class EventAdapter extends BaseAdapter {
             DrinkEvent drinkEvent = (DrinkEvent) event;
             int amount = drinkEvent.getAmount();
             amountString = String.valueOf(amount) + " ml";
-            timeString = timeFormat.format(drinkEvent.getDate()) + " " + "Uhr";
-            dateString = dateFormat.format(drinkEvent.getDate());
+            timeString = TIME_FORMAT.format(drinkEvent.getDate());
+            dateString = DATE_FORMAT.format(drinkEvent.getDate());
             iconResource = R.drawable.bottle;
         } else if (event instanceof SleepEvent) {
             SleepEvent sleepEvent = (SleepEvent) event;
@@ -99,8 +103,9 @@ public class EventAdapter extends BaseAdapter {
                     : hours != 0 ? "" : String.format("%d Minuten", minutes);
             amountString = hoursString + minutesString;
 
-            timeString = timeFormat.format(sleepEvent.getFromDate()) + " - " + timeFormat.format(sleepEvent.getToDate()) + " " + "Uhr";
-            dateString = dateFormat.format(sleepEvent.getFromDate());
+            timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +
+                    TIME_FORMAT.format(sleepEvent.getToDate());
+            dateString = DATE_FORMAT.format(sleepEvent.getToDate());
             iconResource = R.drawable.sleep;
         }
 

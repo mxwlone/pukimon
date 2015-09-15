@@ -19,4 +19,7 @@
     <string name="button_label_new_tab_entry">New tab entry</string>
     <string name="text_view_from_time_text">Von</string>
     <string name="text_view_to_time_text">Bis</string>
+    <string name="title_activity_drink_event">DrinkEventActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_update_entry">Eintrag bearbeiten</string>
 </resources>
