@@ -3,6 +3,6 @@
     tools:context=".MainActivity">
     <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
         <!--android:orderInCategory="100" />-->
-    <item android:id="@+id/clear_database" android:title="Datenbank zurücksetzen"
+    <item android:id="@+id/clear_database" android:title="@string/menu_title_clear_data"
         android:orderInCategory="200"/>
 </menu>

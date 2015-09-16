@@ -1,27 +1,33 @@
 <resources>
+    <!-- general -->
     <string name="app_name">Pukimon</string>
+
+    <!-- menu -->
     <string name="action_settings">Einstellungen</string>
+    <string name="menu_title_clear_data">Daten löschen</string>
+
+    <!-- main fragment -->
+    <string name="button_label_new_entry">Neuer Eintrag</string>
+
+    <!-- new event fragments -->
     <string name="text_view_date_text">Datum</string>
     <string name="text_view_time_text">Zeit</string>
     <string name="text_view_amount_text">Menge</string>
-    <string name="title_activity_new_entry">Neuer Event</string>
-    <string name="time_format">HH:mm</string>
-    <string name="date_format">dd.MM.yyyy</string>
-    <string name="date_time_format">dd.MM.yyyy HH:mm</string>
     <string name="button_ok_text">OK</string>
     <string name="button_cancel_text">Abbrechen</string>
-    <string name="button_label_new_entry">Neuer Eintrag</string>
-    <string name="content_description_event_icon">Event icon</string>
-    <string name="title_activity_new_entry_tabbed">Neuer Eintrag</string>
-
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="button_label_new_tab_entry">New tab entry</string>
+    <string name="title_activity_new_event">Neuer Eintrag</string>
     <string name="text_view_from_time_text">Von</string>
     <string name="text_view_to_time_text">Bis</string>
-    <string name="title_activity_drink_event">DrinkEventActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_update_entry">Eintrag bearbeiten</string>
+
+    <!-- context menu -->
     <string name="context_menu_delete_item">Löschen</string>
     <string name="context_menu_edit_item">Bearbeiten</string>
+
+    <!-- other -->
+    <string name="format_hour">%d Stunde</string>
+    <string name="format_hours">%d Stunden</string>
+    <string name="format_minute">%d Minute</string>
+    <string name="format_minutes">%d Minuten</string>
+    <string name="format_milliliters">" ml"</string>
 </resources>

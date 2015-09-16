@@ -10,7 +10,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dp"
-        android:contentDescription="@string/content_description_event_icon"
         android:src="@drawable/bottle" />
 
     <TextView android:id="@+id/list_item_amount_text"

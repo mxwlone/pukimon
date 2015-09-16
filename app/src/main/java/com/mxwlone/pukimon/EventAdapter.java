@@ -1,6 +1,7 @@
 package com.mxwlone.pukimon;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class EventAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         ViewHolder holder;
+        Resources resources = App.getContext().getResources();
         if(convertView == null) {
             view = mInflater.inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder();
@@ -82,7 +84,7 @@ public class EventAdapter extends BaseAdapter {
         if (event instanceof DrinkEvent) {
             DrinkEvent drinkEvent = (DrinkEvent) event;
             int amount = drinkEvent.getAmount();
-            amountString = String.valueOf(amount) + " ml";
+            amountString = String.valueOf(amount) + resources.getString(R.string.format_milliliters);
             timeString = TIME_FORMAT.format(drinkEvent.getDate());
             dateString = DATE_FORMAT.format(drinkEvent.getDate());
             iconResource = R.drawable.bottle;
@@ -93,14 +95,15 @@ public class EventAdapter extends BaseAdapter {
             long hours = TimeUnit.MILLISECONDS.toHours(diff);
             long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 
+
             String hoursString = hours != 0 ?
-                    hours == 1 ? String.format("%d Stunde" + " ", hours) :
-                            String.format("%d Stunden" + " ", hours) :
+                    hours == 1 ? String.format(resources.getString(R.string.format_hour) + " ", hours) :
+                            String.format(resources.getString(R.string.format_hours) + " ", hours) :
                     "";
             String minutesString = minutes != 0 ?
-                    minutes == 1 ? String.format("%d Minute", minutes) :
-                            String.format("%d Minuten", minutes)
-                    : hours != 0 ? "" : String.format("%d Minuten", minutes);
+                    minutes == 1 ? String.format(resources.getString(R.string.format_minute), minutes) :
+                            String.format(resources.getString(R.string.format_minutes), minutes)
+                    : hours != 0 ? "" : String.format(resources.getString(R.string.format_minutes), minutes);
             amountString = hoursString + minutesString;
 
             timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +

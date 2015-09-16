@@ -1,31 +1,51 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent" android:layout_width="match_parent"
     tools:context=".MainActivityFragment">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_label_new_entry"
+        android:onClick="startNewEventActivity"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/button" />
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_above="@id/button"/>
+
+
+
+</RelativeLayout>
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_height="match_parent"-->
+    <!--tools:context=".MainActivityFragment">-->
+
+
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<ListView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/listView" />-->
 
         <!--<Button-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:text="@string/button_label_new_entry"-->
-            <!--android:onClick="showNewEntryActivity" />-->
+            <!--android:onClick="startNewEventActivity"-->
+            <!--android:id="@+id/button" />-->
+    <!--</LinearLayout>-->
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_label_new_entry"
-            android:onClick="startNewEventActivity"
-            android:id="@+id/button" />
-    </LinearLayout>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView" />
-</LinearLayout>
+<!--</LinearLayout>-->
