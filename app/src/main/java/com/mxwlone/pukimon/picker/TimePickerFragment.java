@@ -12,8 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-//TODO when time was changed and user wants to change it again, set the picker to the previously set time
-
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 

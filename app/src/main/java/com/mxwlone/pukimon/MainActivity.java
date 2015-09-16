@@ -6,11 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.mxwlone.pukimon.domain.DrinkEvent;
 import com.mxwlone.pukimon.domain.Event;
@@ -46,25 +50,91 @@ public class MainActivity extends Activity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Event event = mEvents.get(position);
-                Log.d(TAG, String.format("%s id: %d", event.getClass().getSimpleName(), event.getId()));
-
-                Intent intent = new Intent(parent.getContext(), NewEventActivity.class);
-                intent.putExtra("eventType", event.getClass().toString());
-
-                if (event instanceof DrinkEvent) {
-                    intent.putExtra("id", event.getId());
-                    intent.putExtra("date", ((DrinkEvent) event).getDate().getTime());
-                    intent.putExtra("amount", ((DrinkEvent) event).getAmount());
-                } else if (event instanceof SleepEvent) {
-                    intent.putExtra("id", event.getId());
-                    intent.putExtra("fromDate", ((SleepEvent) event).getFromDate().getTime());
-                    intent.putExtra("toDate", ((SleepEvent) event).getToDate().getTime());
-                }
-
-                startActivity(intent);
+                editEventFromList(position);
             }
         });
+
+        registerForContextMenu(this.mListView);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.context_menu_edit_item:
+                editEventFromList((int) info.id);
+                return true;
+            case R.id.context_menu_delete_item:
+                return deleteEventFromList((int) info.id);
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private Boolean deleteEventFromList(int position) {
+        Event event = mEvents.get(position);
+        Log.d(TAG, String.format("Delete %s with id %d", event.getClass().getSimpleName(), event.getId()));
+
+        PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String selection = "";
+        String tableName = "";
+        if (event instanceof DrinkEvent) {
+            selection = DrinkEventEntry._ID + " LIKE ?";
+            tableName = DrinkEventEntry.TABLE_NAME;
+        } else if (event instanceof SleepEvent) {
+            selection = SleepEventEntry._ID + " LIKE ?";
+            tableName = SleepEventEntry.TABLE_NAME;
+        } else {
+            Log.d(TAG, String.format("Event at position %d does not have type %s or %s. " +
+                    "Delete failed.", position, DrinkEvent.class.getSimpleName(),
+                    SleepEvent.class.getSimpleName()));
+            return false;
+        }
+
+        String[] selectionArgs = { String.valueOf(event.getId()) };
+        if (db.delete(tableName, selection, selectionArgs) < 1) {
+            Toast.makeText(getApplicationContext(), "Database delete failed", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        updateList();
+        return true;
+    }
+
+    private void editEventFromList(int position) {
+        Event event = mEvents.get(position);
+        Log.d(TAG, String.format("Edit %s with id %d", event.getClass().getSimpleName(), event.getId()));
+
+        Intent intent = new Intent(MainActivity.this, NewEventActivity.class);
+        intent.putExtra("eventType", event.getClass().toString());
+
+        if (event instanceof DrinkEvent) {
+            intent.putExtra("id", event.getId());
+            intent.putExtra("date", ((DrinkEvent) event).getDate().getTime());
+            intent.putExtra("amount", ((DrinkEvent) event).getAmount());
+        } else if (event instanceof SleepEvent) {
+            intent.putExtra("id", event.getId());
+            intent.putExtra("fromDate", ((SleepEvent) event).getFromDate().getTime());
+            intent.putExtra("toDate", ((SleepEvent) event).getToDate().getTime());
+        }
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.listView) {
+//            ListView listView = (ListView) v;
+//            AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
+//            Event event = (Event) listView.getItemAtPosition(acmi.position);
+
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.context_menu, menu);
+        }
+
     }
 
     @Override
@@ -104,6 +174,7 @@ public class MainActivity extends Activity {
 
         queryDrinkEventEntry(db);
         querySleepEventEntry(db);
+        db.close();
 
         Collections.sort(mEvents);
 
@@ -132,7 +203,7 @@ public class MainActivity extends Activity {
         );
 
         if (mCursor != null) {
-            while(mCursor.moveToNext()) {
+            while (mCursor.moveToNext()) {
 
                 Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry._ID));
                 Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(DrinkEventEntry.COLUMN_NAME_TIMESTAMP));

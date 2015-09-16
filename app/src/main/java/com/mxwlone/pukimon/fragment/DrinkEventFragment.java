@@ -95,7 +95,13 @@ public class DrinkEventFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     DialogFragment dialogFragment = new DatePickerFragment();
-                    Bundle bundle = getArguments();
+                    Bundle bundle = new Bundle();
+                    try {
+                        Date currentDate = DATE_FORMAT.parse(mEditTextDate.getText().toString());
+                        bundle.putLong("date", currentDate.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     bundle.putInt("view", R.id.drinkEventEditTextDate);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "datePicker");
@@ -109,7 +115,13 @@ public class DrinkEventFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     DialogFragment dialogFragment = new TimePickerFragment();
-                    Bundle bundle = getArguments();
+                    Bundle bundle = new Bundle();
+                    try {
+                        Date currentDate = TIME_FORMAT.parse(mEditTextTime.getText().toString());
+                        bundle.putLong("date", currentDate.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     bundle.putInt("view", R.id.editTextTime);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "timePicker");

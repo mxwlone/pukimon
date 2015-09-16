@@ -12,8 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-//TODO when date was changed and user wants to change it again, set the picker to the previously set date
-
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 

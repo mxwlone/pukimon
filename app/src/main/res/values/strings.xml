@@ -22,4 +22,6 @@
     <string name="title_activity_drink_event">DrinkEventActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_update_entry">Eintrag bearbeiten</string>
+    <string name="context_menu_delete_item">Löschen</string>
+    <string name="context_menu_edit_item">Bearbeiten</string>
 </resources>

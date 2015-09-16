@@ -93,9 +93,13 @@ public class SleepEventFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     DialogFragment dialogFragment = new DatePickerFragment();
-                    Bundle bundle = getArguments();
-                    if (bundle.containsKey("toDate"))
-                        bundle.putLong("date", bundle.getLong("toDate"));
+                    Bundle bundle = new Bundle();
+                    try {
+                        Date currentDate = DATE_FORMAT.parse(mEditTextDate.getText().toString());
+                        bundle.putLong("date", currentDate.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     bundle.putInt("view", R.id.sleepEventEditTextDate);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "datePicker");
@@ -109,9 +113,13 @@ public class SleepEventFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     DialogFragment dialogFragment = new TimePickerFragment();
-                    Bundle bundle = getArguments();
-                    if (bundle.containsKey("fromDate"))
-                        bundle.putLong("date", bundle.getLong("fromDate"));
+                    Bundle bundle = new Bundle();
+                    try {
+                        Date currentDate = TIME_FORMAT.parse(mEditTextFromTime.getText().toString());
+                        bundle.putLong("date", currentDate.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     bundle.putInt("view", R.id.editTextFromTime);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "timePicker");
@@ -125,9 +133,13 @@ public class SleepEventFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     DialogFragment dialogFragment = new TimePickerFragment();
-                    Bundle bundle = getArguments();
-                    if (bundle.containsKey("toDate"))
-                        bundle.putLong("date", bundle.getLong("toDate"));
+                    Bundle bundle = new Bundle();
+                    try {
+                        Date currentDate = TIME_FORMAT.parse(mEditTextToTime.getText().toString());
+                        bundle.putLong("date", currentDate.getTime());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     bundle.putInt("view", R.id.editTextToTime);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "timePicker");
