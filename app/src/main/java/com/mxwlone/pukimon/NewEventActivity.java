@@ -9,13 +9,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.mxwlone.pukimon.domain.DrinkEvent;
+import com.mxwlone.pukimon.domain.EatEvent;
 import com.mxwlone.pukimon.domain.SleepEvent;
 import com.mxwlone.pukimon.fragment.DrinkEventFragment;
+import com.mxwlone.pukimon.fragment.EatEventFragment;
 import com.mxwlone.pukimon.fragment.SleepEventFragment;
 
 import java.util.Locale;
@@ -50,10 +51,6 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
 
                 if (extras.getString("eventType", null).equals(DrinkEvent.class.toString())) {
                     DrinkEventFragment fragment = new DrinkEventFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putLong("id", extras.containsKey("id") ? extras.getLong("id") : 0);
-//                    bundle.putString("date", extras.containsKey("date") ? extras.getString("date") : null);
-//                    bundle.putInt("amount", extras.containsKey("amount") ? extras.getInt("amount") : 0);
                     fragment.setArguments(extras);
 
                     setContentView(R.layout.fragment_placeholder_event_update);
@@ -63,10 +60,15 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
                     return;
                 } else if (extras.getString("eventType", null).equals(SleepEvent.class.toString())) {
                     SleepEventFragment fragment = new SleepEventFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putLong("id", extras.containsKey("id") ? extras.getLong("id") : 0);
-//                    bundle.putString("fromDate", extras.containsKey("fromDate") ? extras.getString("fromDate") : null);
-//                    bundle.putString("toDate", extras.containsKey("toDate") ? extras.getString("toDate") : null);
+                    fragment.setArguments(extras);
+
+                    setContentView(R.layout.fragment_placeholder_event_update);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_placeholder, fragment);
+                    ft.commit();
+                    return;
+                } else if (extras.getString("eventType", null).equals(EatEvent.class.toString())) {
+                    EatEventFragment fragment = new EatEventFragment();
                     fragment.setArguments(extras);
 
                     setContentView(R.layout.fragment_placeholder_event_update);
@@ -117,14 +119,6 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
 
     public void cancelButtonClicked(View view) {
         finish();
-    }
-
-    public void saveSleepEvent(View view) {
-        Util.saveSleepEvent(this, TAG);
-    }
-
-    public void saveDrinkEvent(View view) {
-        Util.saveDrinkEvent(this, TAG);
     }
 
 //    @Override
@@ -180,6 +174,8 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0)
                 return DrinkEventFragment.newInstance();
+            else if (position == 1)
+                return EatEventFragment.newInstance();
             else
                 return SleepEventFragment.newInstance();
         }
@@ -187,7 +183,7 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -197,6 +193,8 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
                 case 0:
                     return getString(R.string.title_update_entry).toUpperCase(l);
                 case 1:
+                    return getString(R.string.title_update_entry).toUpperCase(l);
+                case 2:
                     return getString(R.string.title_update_entry).toUpperCase(l);
             }
             return null;
@@ -208,6 +206,8 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
                 case 0:
                     return getDrawable(R.drawable.bottle);
                 case 1:
+                    return getDrawable(R.drawable.eat);
+                case 2:
                     return getDrawable(R.drawable.sleep);
             }
             return null;

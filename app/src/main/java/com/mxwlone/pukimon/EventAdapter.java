@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mxwlone.pukimon.domain.DrinkEvent;
+import com.mxwlone.pukimon.domain.EatEvent;
 import com.mxwlone.pukimon.domain.Event;
 import com.mxwlone.pukimon.domain.SleepEvent;
 
@@ -88,13 +89,18 @@ public class EventAdapter extends BaseAdapter {
             timeString = TIME_FORMAT.format(drinkEvent.getDate());
             dateString = DATE_FORMAT.format(drinkEvent.getDate());
             iconResource = R.drawable.bottle;
+        } else if (event instanceof EatEvent) {
+            EatEvent eatEvent = (EatEvent) event;
+            int amount = eatEvent.getAmount();
+            amountString = String.valueOf(amount) + resources.getString(R.string.format_gram);
+            timeString = TIME_FORMAT.format(eatEvent.getDate());
+            dateString = DATE_FORMAT.format(eatEvent.getDate());
+            iconResource = R.drawable.eat;
         } else if (event instanceof SleepEvent) {
             SleepEvent sleepEvent = (SleepEvent) event;
-
             long diff = sleepEvent.getToDate().getTime() - sleepEvent.getFromDate().getTime();
             long hours = TimeUnit.MILLISECONDS.toHours(diff);
             long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
-
 
             String hoursString = hours != 0 ?
                     hours == 1 ? String.format(resources.getString(R.string.format_hour) + " ", hours) :
@@ -105,7 +111,6 @@ public class EventAdapter extends BaseAdapter {
                             String.format(resources.getString(R.string.format_minutes), minutes)
                     : hours != 0 ? "" : String.format(resources.getString(R.string.format_minutes), minutes);
             amountString = hoursString + minutesString;
-
             timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +
                     TIME_FORMAT.format(sleepEvent.getToDate());
             dateString = DATE_FORMAT.format(sleepEvent.getToDate());

@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.mxwlone.pukimon.R;
 import com.mxwlone.pukimon.picker.DatePickerFragment;
 import com.mxwlone.pukimon.picker.TimePickerFragment;
-import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
+import com.mxwlone.pukimon.sql.PukimonContract.EatEventEntry;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
 
 import java.text.DateFormat;
@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class DrinkEventFragment extends Fragment {
+public class EatEventFragment extends Fragment {
 
     final String TAG = this.getClass().getSimpleName();
 
@@ -39,11 +39,11 @@ public class DrinkEventFragment extends Fragment {
     Locale LOCALE;
     DateFormat TIME_FORMAT, DATE_FORMAT, DATE_TIME_FORMAT;
 
-    public static DrinkEventFragment newInstance() {
-        return new DrinkEventFragment();
+    public static EatEventFragment newInstance() {
+        return new EatEventFragment();
     }
 
-    public DrinkEventFragment() {
+    public EatEventFragment() {
     }
 
     @Override
@@ -56,9 +56,9 @@ public class DrinkEventFragment extends Fragment {
         DATE_TIME_FORMAT = DateFormat.getDateTimeInstance(DateFormat.SHORT,
                 DateFormat.SHORT, LOCALE);
 
-        mEditTextDate = (EditText) getActivity().findViewById(R.id.drinkEventEditTextDate);
-        mEditTextTime = (EditText) getActivity().findViewById(R.id.drinkEventEditTextTime);
-        mEditTextAmount = (EditText) getActivity().findViewById(R.id.drinkEventEditTextAmount);
+        mEditTextDate = (EditText) getActivity().findViewById(R.id.eatEventEditTextDate);
+        mEditTextTime = (EditText) getActivity().findViewById(R.id.eatEventEditTextTime);
+        mEditTextAmount = (EditText) getActivity().findViewById(R.id.eatEventEditTextAmount);
 
         // try to get arguments
         int amount = 0;
@@ -102,7 +102,7 @@ public class DrinkEventFragment extends Fragment {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    bundle.putInt("view", R.id.drinkEventEditTextDate);
+                    bundle.putInt("view", R.id.eatEventEditTextDate);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "datePicker");
                 }
@@ -122,7 +122,7 @@ public class DrinkEventFragment extends Fragment {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    bundle.putInt("view", R.id.drinkEventEditTextTime);
+                    bundle.putInt("view", R.id.eatEventEditTextTime);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getFragmentManager(), "timePicker");
                 }
@@ -130,7 +130,7 @@ public class DrinkEventFragment extends Fragment {
             }
         });
 
-        Button okButton = (Button) getActivity().findViewById(R.id.drinkEventOkButton);
+        Button okButton = (Button) getActivity().findViewById(R.id.eatEventOkButton);
         okButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 okButtonClicked();
@@ -162,20 +162,20 @@ public class DrinkEventFragment extends Fragment {
         }
 
         ContentValues values = new ContentValues();
-        values.put(DrinkEventEntry.COLUMN_NAME_TIMESTAMP, date.getTime());
-        values.put(DrinkEventEntry.COLUMN_NAME_AMOUNT, amountString);
+        values.put(EatEventEntry.COLUMN_NAME_TIMESTAMP, date.getTime());
+        values.put(EatEventEntry.COLUMN_NAME_AMOUNT, amountString);
 
         if (mId != 0L) {
-            updateDrinkEvent(values);
+            updateEatEvent(values);
         } else {
-            saveDrinkEvent(values);
+            saveEatEvent(values);
         }
     }
 
-    private void saveDrinkEvent(ContentValues values) {
+    private void saveEatEvent(ContentValues values) {
         PukimonDbHelper dbHelper = new PukimonDbHelper(getActivity().getApplicationContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long newRowId = db.insert(DrinkEventEntry.TABLE_NAME, null, values);
+        long newRowId = db.insert(EatEventEntry.TABLE_NAME, null, values);
         if (newRowId == -1) {
             Toast.makeText(getActivity().getApplicationContext(), "Database insert failed", Toast.LENGTH_SHORT).show();
             return;
@@ -184,15 +184,15 @@ public class DrinkEventFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void updateDrinkEvent(ContentValues values) {
+    private void updateEatEvent(ContentValues values) {
         PukimonDbHelper dbHelper = new PukimonDbHelper(getActivity().getApplicationContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String selection = DrinkEventEntry._ID + " LIKE ?";
+        String selection = EatEventEntry._ID + " LIKE ?";
         String[] selectionArgs = { String.valueOf(mId) };
 
         int count = db.update(
-                DrinkEventEntry.TABLE_NAME,
+                EatEventEntry.TABLE_NAME,
                 values,
                 selection,
                 selectionArgs
@@ -211,7 +211,7 @@ public class DrinkEventFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_drink_event, container, false);
+        return inflater.inflate(R.layout.fragment_eat_event, container, false);
     }
 
 }

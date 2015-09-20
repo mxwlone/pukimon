@@ -29,6 +29,7 @@
     <string name="format_hours">%d Hours</string>
     <string name="format_minute">%d Minute</string>
     <string name="format_minutes">%d Minutes</string>
-    <string name="format_milliliters">" ml"</string>
+    <string name="format_milliliters">"ml"</string>
+    <string name="format_gram">g</string>
 
 </resources>

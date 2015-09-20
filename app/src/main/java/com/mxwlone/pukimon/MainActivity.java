@@ -17,9 +17,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mxwlone.pukimon.domain.DrinkEvent;
+import com.mxwlone.pukimon.domain.EatEvent;
 import com.mxwlone.pukimon.domain.Event;
 import com.mxwlone.pukimon.domain.SleepEvent;
 import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
+import com.mxwlone.pukimon.sql.PukimonContract.EatEventEntry;
 import com.mxwlone.pukimon.sql.PukimonContract.SleepEventEntry;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
 
@@ -86,10 +88,13 @@ public class MainActivity extends Activity {
         } else if (event instanceof SleepEvent) {
             selection = SleepEventEntry._ID + " LIKE ?";
             tableName = SleepEventEntry.TABLE_NAME;
+        } else if (event instanceof EatEvent) {
+            selection = EatEventEntry._ID + " LIKE ?";
+            tableName = EatEventEntry.TABLE_NAME;
         } else {
-            Log.d(TAG, String.format("Event at position %d does not have type %s or %s. " +
+            Log.d(TAG, String.format("Event at position %d does not have type %s or %s or %s. " +
                     "Delete failed.", position, DrinkEvent.class.getSimpleName(),
-                    SleepEvent.class.getSimpleName()));
+                    SleepEvent.class.getSimpleName(), EatEvent.class.getSimpleName()));
             return false;
         }
 
@@ -118,6 +123,10 @@ public class MainActivity extends Activity {
             intent.putExtra("id", event.getId());
             intent.putExtra("fromDate", ((SleepEvent) event).getFromDate().getTime());
             intent.putExtra("toDate", ((SleepEvent) event).getToDate().getTime());
+        } else if (event instanceof EatEvent) {
+            intent.putExtra("id", event.getId());
+            intent.putExtra("date", ((EatEvent) event).getDate().getTime());
+            intent.putExtra("amount", ((EatEvent) event).getAmount());
         }
 
         startActivity(intent);
@@ -134,7 +143,6 @@ public class MainActivity extends Activity {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.context_menu, menu);
         }
-
     }
 
     @Override
@@ -150,30 +158,9 @@ public class MainActivity extends Activity {
         PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        // add test data
-//        Calendar cal = Calendar.getInstance();
-//        SleepEvent sleepEvent1 = new SleepEvent();
-//        sleepEvent1.setFromDate(cal.getTime());
-//        cal.add(Calendar.HOUR_OF_DAY, 2);
-//        cal.add(Calendar.MINUTE, 37);
-//        sleepEvent1.setToDate(cal.getTime());
-//
-//        cal.add(Calendar.HOUR_OF_DAY, 1);
-//        SleepEvent sleepEvent2 = new SleepEvent();
-//        sleepEvent2.setFromDate(cal.getTime());
-//        cal.add(Calendar.MINUTE, 43);
-//        sleepEvent2.setToDate(cal.getTime());
-//
-//        cal.add(Calendar.HOUR_OF_DAY, -4);
-//        DrinkEvent drinkEvent1 = new DrinkEvent(cal.getTime(), 150);
-//
-//        mEvents.add(drinkEvent1);
-//        mEvents.add(sleepEvent2);
-//        mEvents.add(sleepEvent1);
-//        Collections.sort(mEvents);
-
         queryDrinkEventEntry(db);
         querySleepEventEntry(db);
+        queryEatEventEntry(db);
         db.close();
 
         Collections.sort(mEvents);
@@ -193,13 +180,11 @@ public class MainActivity extends Activity {
                 DrinkEventEntry.COLUMN_NAME_TIMESTAMP,
                 DrinkEventEntry.COLUMN_NAME_AMOUNT,
         };
-//        String sortOrder = DrinkEventEntry.COLUMN_NAME_TIMESTAMP + " DESC";
 
         mCursor = db.query(
                 DrinkEventEntry.TABLE_NAME,
                 projection,
                 null, null, null, null, null
-//                sortOrder
         );
 
         if (mCursor != null) {
@@ -225,19 +210,52 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void queryEatEventEntry(SQLiteDatabase db) {
+        String[] projection = {
+                EatEventEntry._ID,
+                EatEventEntry.COLUMN_NAME_TIMESTAMP,
+                EatEventEntry.COLUMN_NAME_AMOUNT,
+        };
+
+        mCursor = db.query(
+                EatEventEntry.TABLE_NAME,
+                projection,
+                null, null, null, null, null
+        );
+
+        if (mCursor != null) {
+            while (mCursor.moveToNext()) {
+
+                Long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(EatEventEntry._ID));
+                Long timestamp = mCursor.getLong(mCursor.getColumnIndexOrThrow(EatEventEntry.COLUMN_NAME_TIMESTAMP));
+                int amount = mCursor.getInt(mCursor.getColumnIndexOrThrow(EatEventEntry.COLUMN_NAME_AMOUNT));
+
+                EatEvent eatEvent = new EatEvent(id);
+                eatEvent.setAmount(amount);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(timestamp);
+                eatEvent.setDate(calendar.getTime());
+
+                Log.d(TAG, String.format("EatEventEntry id: %d\tdate: %s\tamount: %s",
+                        id, eatEvent.getDate().toString(), eatEvent.getAmount()));
+                mEvents.add(eatEvent);
+
+            }
+        }
+    }
+
     private void querySleepEventEntry(SQLiteDatabase db) {
         String[] projection = {
                 SleepEventEntry._ID,
                 SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM,
                 SleepEventEntry.COLUMN_NAME_TIMESTAMP_TO,
         };
-//        String sortOrder = SleepEventEntry.COLUMN_NAME_TIMESTAMP_FROM + " DESC";
 
         mCursor = db.query(
                 SleepEventEntry.TABLE_NAME,
                 projection,
                 null, null, null, null, null
-//                sortOrder
         );
 
         if (mCursor != null) {

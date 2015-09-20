@@ -22,4 +22,10 @@ public final class PukimonContract {
         public static final String COLUMN_NAME_TIMESTAMP_TO = "timestamp_until";
     }
 
+    public static abstract class EatEventEntry implements BaseColumns {
+        public static final String TABLE_NAME = "eat_event_entry";
+        public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
+        public static final String COLUMN_NAME_AMOUNT = "amount";
+    }
+
 }

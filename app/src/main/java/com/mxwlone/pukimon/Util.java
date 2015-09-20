@@ -76,9 +76,9 @@ public class Util {
     public static void saveDrinkEvent(Activity activity, final String TAG) {
         EditText editTextDate = (EditText) activity.findViewById(R.id.drinkEventEditTextDate);
         String dateString = editTextDate.getText().toString();
-        EditText editTextTime = (EditText) activity.findViewById(R.id.editTextTime);
+        EditText editTextTime = (EditText) activity.findViewById(R.id.drinkEventEditTextTime);
         String timeString = editTextTime.getText().toString();
-        EditText editTextAmount = (EditText) activity.findViewById(R.id.editTextAmount);
+        EditText editTextAmount = (EditText) activity.findViewById(R.id.drinkEventEditTextAmount);
         String amountString = editTextAmount.getText().toString();
 
         Log.d(TAG, "dateString: " + dateString);
