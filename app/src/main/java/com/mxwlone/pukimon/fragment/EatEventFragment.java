@@ -2,7 +2,7 @@ package com.mxwlone.pukimon.fragment;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -104,7 +104,7 @@ public class EatEventFragment extends Fragment {
                     }
                     bundle.putInt("view", R.id.eatEventEditTextDate);
                     dialogFragment.setArguments(bundle);
-                    dialogFragment.show(getFragmentManager(), "datePicker");
+                    dialogFragment.show(getActivity().getFragmentManager(), "datePicker");
                 }
                 return false;
             }
@@ -124,7 +124,7 @@ public class EatEventFragment extends Fragment {
                     }
                     bundle.putInt("view", R.id.eatEventEditTextTime);
                     dialogFragment.setArguments(bundle);
-                    dialogFragment.show(getFragmentManager(), "timePicker");
+                    dialogFragment.show(getActivity().getFragmentManager(), "timePicker");
                 }
                 return false;
             }

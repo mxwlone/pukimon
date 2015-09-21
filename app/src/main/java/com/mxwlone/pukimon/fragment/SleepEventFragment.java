@@ -2,7 +2,7 @@ package com.mxwlone.pukimon.fragment;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -102,7 +102,7 @@ public class SleepEventFragment extends Fragment {
                     }
                     bundle.putInt("view", R.id.sleepEventEditTextDate);
                     dialogFragment.setArguments(bundle);
-                    dialogFragment.show(getFragmentManager(), "datePicker");
+                    dialogFragment.show(getActivity().getFragmentManager(), "datePicker");
                 }
                 return false;
             }
@@ -122,7 +122,7 @@ public class SleepEventFragment extends Fragment {
                     }
                     bundle.putInt("view", R.id.editTextFromTime);
                     dialogFragment.setArguments(bundle);
-                    dialogFragment.show(getFragmentManager(), "timePicker");
+                    dialogFragment.show(getActivity().getFragmentManager(), "timePicker");
                 }
                 return false;
             }
@@ -142,7 +142,7 @@ public class SleepEventFragment extends Fragment {
                     }
                     bundle.putInt("view", R.id.editTextToTime);
                     dialogFragment.setArguments(bundle);
-                    dialogFragment.show(getFragmentManager(), "timePicker");
+                    dialogFragment.show(getActivity().getFragmentManager(), "timePicker");
                 }
                 return false;
             }
