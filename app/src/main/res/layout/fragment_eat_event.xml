@@ -95,7 +95,7 @@
             android:text="@string/button_ok_text"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@color/blue_normal" />
+            android:backgroundTint="@color/blue_normal" />
 
     </RelativeLayout>
 
