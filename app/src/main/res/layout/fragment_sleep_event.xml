@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mxwlone.NewEntryFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:touchscreenBlocksFocus="false">
 
 
     <LinearLayout
@@ -94,7 +95,8 @@
             android:layout_height="wrap_content"
             android:text="@string/button_ok_text"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:backgroundTint="@color/blue_normal" />
 
     </RelativeLayout>
 

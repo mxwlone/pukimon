@@ -1,5 +1,6 @@
 package com.mxwlone.pukimon;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -57,6 +58,14 @@ public class MainActivity extends FragmentActivity {
         });
 
         registerForContextMenu(this.mListView);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startNewEventActivity(view);
+            }
+        });
     }
 
     @Override

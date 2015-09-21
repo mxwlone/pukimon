@@ -14,7 +14,7 @@
     <string name="text_view_time_text">Zeit</string>
     <string name="text_view_amount_text">Menge</string>
     <string name="button_ok_text">OK</string>
-    <string name="button_cancel_text">Abbrechen</string>
+    <string name="button_cancel_text">ABBRECHEN</string>
     <string name="title_activity_new_event">Neuer Eintrag</string>
     <string name="text_view_from_time_text">Von</string>
     <string name="text_view_to_time_text">Bis</string>
