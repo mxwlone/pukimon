@@ -1,7 +1,7 @@
 package com.mxwlone.pukimon;
 
 import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -21,7 +21,7 @@ import com.mxwlone.pukimon.fragment.SleepEventFragment;
 
 import java.util.Locale;
 
-public class NewEventActivity extends Activity implements ActionBar.TabListener {
+public class NewEventActivity extends FragmentActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -204,11 +204,11 @@ public class NewEventActivity extends Activity implements ActionBar.TabListener 
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getDrawable(R.drawable.bottle);
+                    return getResources().getDrawable(R.drawable.bottle);
                 case 1:
-                    return getDrawable(R.drawable.eat);
+                    return getResources().getDrawable(R.drawable.eat);
                 case 2:
-                    return getDrawable(R.drawable.sleep);
+                    return getResources().getDrawable(R.drawable.sleep);
             }
             return null;
         }

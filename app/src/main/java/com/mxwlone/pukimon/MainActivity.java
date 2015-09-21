@@ -1,6 +1,6 @@
 package com.mxwlone.pukimon;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     final String TAG = this.getClass().getSimpleName();
 

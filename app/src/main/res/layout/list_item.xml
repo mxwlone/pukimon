@@ -35,7 +35,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="14.09.2015"
         android:layout_below="@+id/list_item_amount_text"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
 
 </RelativeLayout>

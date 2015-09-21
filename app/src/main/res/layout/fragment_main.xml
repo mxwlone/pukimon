@@ -10,7 +10,8 @@
         android:onClick="startNewEventActivity"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:layout_alignParentRight="true" />
 
     <ListView
         android:layout_width="match_parent"
