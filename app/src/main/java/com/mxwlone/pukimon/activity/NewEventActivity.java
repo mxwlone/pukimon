@@ -1,17 +1,18 @@
-package com.mxwlone.pukimon;
+package com.mxwlone.pukimon.activity;
 
 import android.app.ActionBar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mxwlone.pukimon.R;
 import com.mxwlone.pukimon.domain.DrinkEvent;
 import com.mxwlone.pukimon.domain.EatEvent;
 import com.mxwlone.pukimon.domain.SleepEvent;

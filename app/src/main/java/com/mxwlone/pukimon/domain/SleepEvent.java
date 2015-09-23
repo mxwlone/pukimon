@@ -7,18 +7,10 @@ import java.util.Date;
  */
 public class SleepEvent extends Event {
 
-    private Date fromDate, toDate;
+    private Date fromDate;
 
     public SleepEvent(long id) {
         super(id);
-    }
-
-    public Date getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
     }
 
     public Date getFromDate() {

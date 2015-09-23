@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by maxwel on 01.09.2015.
@@ -113,6 +114,17 @@ public class Util {
         }
 
         activity.finish();
+    }
+
+    public static String getDateString(Date date) {
+        Locale locale = App.getContext().getResources().getConfiguration().locale;
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, locale);
+        return dateFormat.format(date);
+    }
+
+    public static int getDifferenceInMinutes(Date fromDate, Date toDate) {
+        long diff = toDate.getTime() - fromDate.getTime();
+        return (int) TimeUnit.MILLISECONDS.toMinutes(diff);
     }
 
 }

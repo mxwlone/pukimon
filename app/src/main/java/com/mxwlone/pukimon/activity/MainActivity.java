@@ -1,11 +1,11 @@
-package com.mxwlone.pukimon;
+package com.mxwlone.pukimon.activity;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -17,6 +17,8 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mxwlone.pukimon.EventAdapter;
+import com.mxwlone.pukimon.R;
 import com.mxwlone.pukimon.domain.DrinkEvent;
 import com.mxwlone.pukimon.domain.EatEvent;
 import com.mxwlone.pukimon.domain.Event;
@@ -39,7 +41,6 @@ public class MainActivity extends FragmentActivity {
     Cursor mCursor = null;
     EventAdapter mAdapter;
     List<Event> mEvents = new ArrayList<Event>();
-//    SimpleCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,7 @@ public class MainActivity extends FragmentActivity {
         } else if (event instanceof SleepEvent) {
             intent.putExtra("id", event.getId());
             intent.putExtra("fromDate", ((SleepEvent) event).getFromDate().getTime());
-            intent.putExtra("toDate", ((SleepEvent) event).getToDate().getTime());
+            intent.putExtra("toDate", ((SleepEvent) event).getDate().getTime());
         } else if (event instanceof EatEvent) {
             intent.putExtra("id", event.getId());
             intent.putExtra("date", ((EatEvent) event).getDate().getTime());
@@ -278,11 +279,11 @@ public class MainActivity extends FragmentActivity {
                 calendar.setTimeInMillis(fromTimestamp);
                 sleepEvent.setFromDate(calendar.getTime());
                 calendar.setTimeInMillis(toTimestamp);
-                sleepEvent.setToDate(calendar.getTime());
+                sleepEvent.setDate(calendar.getTime());
 
                 Log.d(TAG, String.format("SleepEventEntry id: %d\tfromDate: %s\ttoDate: %s" +
                                 System.getProperty("line.separator"),
-                        id, sleepEvent.getFromDate().toString(), sleepEvent.getToDate().toString()));
+                        id, sleepEvent.getFromDate().toString(), sleepEvent.getDate().toString()));
                 mEvents.add(sleepEvent);
             }
         }

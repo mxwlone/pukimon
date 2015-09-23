@@ -98,7 +98,7 @@ public class EventAdapter extends BaseAdapter {
             iconResource = R.drawable.eat;
         } else if (event instanceof SleepEvent) {
             SleepEvent sleepEvent = (SleepEvent) event;
-            long diff = sleepEvent.getToDate().getTime() - sleepEvent.getFromDate().getTime();
+            long diff = sleepEvent.getDate().getTime() - sleepEvent.getFromDate().getTime();
             long hours = TimeUnit.MILLISECONDS.toHours(diff);
             long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 
@@ -112,8 +112,8 @@ public class EventAdapter extends BaseAdapter {
                     : hours != 0 ? "" : String.format(resources.getString(R.string.format_minutes), minutes);
             amountString = hoursString + minutesString;
             timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +
-                    TIME_FORMAT.format(sleepEvent.getToDate());
-            dateString = DATE_FORMAT.format(sleepEvent.getToDate());
+                    TIME_FORMAT.format(sleepEvent.getDate());
+            dateString = DATE_FORMAT.format(sleepEvent.getDate());
             iconResource = R.drawable.sleep;
         }
 
