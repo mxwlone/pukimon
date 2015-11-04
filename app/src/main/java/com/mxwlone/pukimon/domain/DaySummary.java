@@ -6,7 +6,7 @@ package com.mxwlone.pukimon.domain;
 public class DaySummary {
 
     private String date;
-    private int drinkTotal, eatTotal, sleepTotalMinutes;
+    private int drinkTotal, eatTotal, sleepMinutesTotal;
 
     public DaySummary() {
     }
@@ -39,11 +39,15 @@ public class DaySummary {
         this.eatTotal = eatTotal;
     }
 
-    public int getSleepTotalMinutes() {
-        return sleepTotalMinutes;
+    public int getSleepMinutesTotal() {
+        return sleepMinutesTotal;
     }
 
-    public void setSleepTotalMinutes(int sleepTotalMinutes) {
-        this.sleepTotalMinutes = sleepTotalMinutes;
+    public void setSleepMinutesTotal(int sleepMinutesTotal) {
+        this.sleepMinutesTotal = sleepMinutesTotal;
+    }
+
+    public String toString() {
+        return this.date + " " + this.drinkTotal + "ml " + this.eatTotal + "g " + this.sleepMinutesTotal + "minutes";
     }
 }

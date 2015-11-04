@@ -11,9 +11,7 @@ public class DrinkEvent extends Event {
         super(id);
     }
 
-    public int getAmount() {
-        return amount;
-    }
+    public int getAmount() { return amount; }
 
     public void setAmount(int amount) {
         this.amount = amount;

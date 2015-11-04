@@ -14,10 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mxwlone.pukimon.EventAdapter;
+import com.mxwlone.pukimon.ExpandableEventAdapter;
 import com.mxwlone.pukimon.R;
 import com.mxwlone.pukimon.domain.DrinkEvent;
 import com.mxwlone.pukimon.domain.EatEvent;
@@ -37,9 +40,9 @@ public class MainActivity extends FragmentActivity {
 
     final String TAG = this.getClass().getSimpleName();
 
-    ListView mListView;
+    ExpandableListView mListView;
     Cursor mCursor = null;
-    EventAdapter mAdapter;
+    ExpandableEventAdapter mAdapter;
     List<Event> mEvents = new ArrayList<Event>();
 
     @Override
@@ -47,18 +50,18 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdapter = new EventAdapter(this, mEvents);
-        mListView = (ListView) findViewById(R.id.listView);
+        mAdapter = new ExpandableEventAdapter(this, mEvents);
+        mListView = (ExpandableListView) findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                editEventFromList(position);
-            }
-        });
-
-        registerForContextMenu(this.mListView);
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                editEventFromList(position);
+//            }
+//        });
+//
+//        registerForContextMenu(this.mListView);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +184,10 @@ public class MainActivity extends FragmentActivity {
             Log.d(TAG, String.format("%s id: %d", event.getClass().getSimpleName(), event.getId()));
         }
 
-        mAdapter.notifyDataSetChanged();
+        if (mAdapter != null) {
+            mAdapter.setData(mEvents);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void queryDrinkEventEntry(SQLiteDatabase db) {
@@ -211,7 +217,7 @@ public class MainActivity extends FragmentActivity {
                 calendar.setTimeInMillis(timestamp);
                 drinkEvent.setDate(calendar.getTime());
 
-                Log.d(TAG, String.format("DrinkEventEntry id: %d\tdate: %s\tamount: %s" +
+                Log.d(TAG, String.format("DrinkEventEntry id: %d date: %s amount: %s" +
                                 System.getProperty("line.separator"),
                         id, drinkEvent.getDate().toString(), drinkEvent.getAmount()));
                 mEvents.add(drinkEvent);
@@ -247,7 +253,7 @@ public class MainActivity extends FragmentActivity {
                 calendar.setTimeInMillis(timestamp);
                 eatEvent.setDate(calendar.getTime());
 
-                Log.d(TAG, String.format("EatEventEntry id: %d\tdate: %s\tamount: %s",
+                Log.d(TAG, String.format("EatEventEntry id: %d date: %s amount: %s",
                         id, eatEvent.getDate().toString(), eatEvent.getAmount()));
                 mEvents.add(eatEvent);
 
@@ -281,7 +287,7 @@ public class MainActivity extends FragmentActivity {
                 calendar.setTimeInMillis(toTimestamp);
                 sleepEvent.setDate(calendar.getTime());
 
-                Log.d(TAG, String.format("SleepEventEntry id: %d\tfromDate: %s\ttoDate: %s" +
+                Log.d(TAG, String.format("SleepEventEntry id: %d fromDate: %s toDate: %s" +
                                 System.getProperty("line.separator"),
                         id, sleepEvent.getFromDate().toString(), sleepEvent.getDate().toString()));
                 mEvents.add(sleepEvent);

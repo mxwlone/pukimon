@@ -19,7 +19,7 @@
         app:borderWidth="0dp"
         app:rippleColor="@color/ripple" />
 
-    <ListView
+    <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listView"

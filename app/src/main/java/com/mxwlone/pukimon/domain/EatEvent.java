@@ -7,9 +7,7 @@ public class EatEvent extends Event {
 
     private int amount;
 
-    public EatEvent(long id) {
-        super(id);
-    }
+    public EatEvent(long id) { super(id); }
 
     public int getAmount() {
         return amount;

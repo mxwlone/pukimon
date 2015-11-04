@@ -38,4 +38,8 @@ public abstract class Event implements Comparable<Event> {
 
         return another.getDate().compareTo(this.getDate());
     }
+
+    public String toString() {
+        return this.getClass().getSimpleName() + " " + this.id;
+    }
 }
