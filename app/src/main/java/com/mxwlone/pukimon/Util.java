@@ -127,4 +127,25 @@ public class Util {
         return (int) TimeUnit.MILLISECONDS.toMinutes(diff);
     }
 
+    public static String formatHoursString(int minutes) {
+        if (minutes == 1)
+            return String.valueOf(minutes) + " " +
+                    App.getContext().getResources().getString(R.string.format_minute);
+        else if (minutes <= 59)
+            return String.valueOf(minutes) + " " +
+                    App.getContext().getResources().getString(R.string.format_minutes);
+        else if (minutes == 60)
+            return String.valueOf(minutes/60) + " " +
+                    App.getContext().getResources().getString(R.string.format_hour);
+        else {
+            int hours = minutes / 60;
+
+            String minutesStr = minutes % 60 < 10 ? "0" + String.valueOf(minutes % 60) :
+                    String.valueOf(minutes % 60);
+
+            return String.valueOf(hours) + ":" + minutesStr + " " +
+                    App.getContext().getResources().getString(R.string.format_hours);
+        }
+    }
+
 }
