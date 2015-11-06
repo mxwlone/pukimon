@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dp" android:orientation="horizontal">
+    android:padding="6dp" android:orientation="horizontal" android:background="@color/primary_material_dark">
 
     <ImageView android:id="@+id/list_item_event_icon"
         android:layout_width="wrap_content"

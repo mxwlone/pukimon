@@ -17,8 +17,12 @@ import com.mxwlone.pukimon.domain.EatEvent;
 import com.mxwlone.pukimon.domain.Event;
 import com.mxwlone.pukimon.domain.SleepEvent;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +37,7 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
     private List<DaySummary> mGroupItems = new ArrayList<>();
     private HashMap<DaySummary, List<Event>> mChildItems = new HashMap<>();
     private LayoutInflater mInflater;
+    private List<Event> mEvents;
 
     Locale LOCALE;
     DateFormat TIME_FORMAT, DATE_FORMAT, DATE_TIME_FORMAT;
@@ -47,6 +52,7 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
         super();
         mInflater = LayoutInflater.from(context);
         this.mContext = context;
+        this.mEvents = events;
 
         LOCALE = context.getResources().getConfiguration().locale;
         TIME_FORMAT = DateFormat.getTimeInstance(DateFormat.SHORT, LOCALE);
@@ -135,28 +141,57 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        DaySummary groupView = (DaySummary) getGroup(groupPosition);
+        View view;
+        GroupViewHolder holder;
+        Resources resources = App.getContext().getResources();
+
+        final DaySummary daySummary = (DaySummary) getGroup(groupPosition);
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_item, null);
+            view = mInflater.inflate(R.layout.group_item, parent, false); // or inflate(R.layout.group_item, null)
+        } else {
+            view = convertView;
         }
 
-        TextView textView = (TextView) convertView
-                .findViewById(R.id.list_item_amount_text);
-        textView.setTypeface(null, Typeface.BOLD);
-        textView.setText(groupView.toString());
+        holder = new GroupViewHolder();
+        holder.dateText = (TextView)view.findViewById(R.id.group_item_date_text);
+        holder.drinkEventIcon = (ImageView)view.findViewById(R.id.group_item_drink_event_icon);
+        holder.drinkEventText = (TextView)view.findViewById(R.id.group_item_drink_event_text);
+        holder.eatEventIcon = (ImageView)view.findViewById(R.id.group_item_eat_event_icon);
+        holder.eatEventText = (TextView)view.findViewById(R.id.group_item_eat_event_text);
+        holder.sleepEventIcon = (ImageView)view.findViewById(R.id.group_item_sleep_event_icon);
+        holder.sleepEventText = (TextView)view.findViewById(R.id.group_item_sleep_event_text);
 
-        return convertView;
+        String dateText = daySummary.getDate();
+        Calendar calendar = Calendar.getInstance();
+        if (Util.getDateString(calendar.getTime()).equals(dateText))
+            dateText = resources.getString(R.string.today);
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        if (Util.getDateString(calendar.getTime()).equals(dateText))
+            dateText = resources.getString(R.string.yesterday);
+
+        holder.dateText.setText(dateText);
+        holder.drinkEventIcon.setImageResource(R.drawable.bottle);
+        holder.drinkEventText.setText(String.valueOf(daySummary.getDrinkTotal()) + resources.getString(R.string.format_milliliters));
+        holder.eatEventIcon.setImageResource(R.drawable.eat);
+        holder.eatEventText.setText(String.valueOf(daySummary.getEatTotal()) + resources.getString(R.string.format_gram));
+        holder.sleepEventIcon.setImageResource(R.drawable.sleep);
+        holder.sleepEventText.setText(String.valueOf(daySummary.getSleepMinutesTotal()) + " " + resources.getString(R.string.format_minutes));
+
+        return view;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View view;
-        ViewHolder holder;
+        ChildViewHolder holder;
         Resources resources = App.getContext().getResources();
+
+        final Event event = (Event) getChild(groupPosition, childPosition);
+
         if(convertView == null) {
             view = mInflater.inflate(R.layout.list_item, parent, false);
-            holder = new ViewHolder();
+            holder = new ChildViewHolder();
             holder.eventIcon = (ImageView)view.findViewById(R.id.list_item_event_icon);
             holder.amountText = (TextView)view.findViewById(R.id.list_item_amount_text);
             holder.timeText = (TextView)view.findViewById(R.id.list_item_time_text);
@@ -164,10 +199,8 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
             view.setTag(holder);
         } else {
             view = convertView;
-            holder = (ViewHolder)view.getTag();
+            holder = (ChildViewHolder)view.getTag();
         }
-
-        final Event event = (Event) getChild(groupPosition, childPosition);
 
         String amountString = "";
         String timeString = "";
@@ -195,14 +228,14 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
             long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 
             String hoursString = hours != 0 ?
-                    hours == 1 ? String.format(resources.getString(R.string.format_hour) + " ", hours) :
-                            String.format(resources.getString(R.string.format_hours) + " ", hours) :
+                    hours == 1 ? String.format("%d " + resources.getString(R.string.format_hour), hours) :
+                            String.format("%d " + resources.getString(R.string.format_hours), hours) :
                     "";
             String minutesString = minutes != 0 ?
-                    minutes == 1 ? String.format(resources.getString(R.string.format_minute), minutes) :
-                            String.format(resources.getString(R.string.format_minutes), minutes)
-                    : hours != 0 ? "" : String.format(resources.getString(R.string.format_minutes), minutes);
-            amountString = hoursString + minutesString;
+                    minutes == 1 ? String.format("%d " + resources.getString(R.string.format_minute), minutes) :
+                            String.format("%d " + resources.getString(R.string.format_minutes), minutes) :
+                    hours != 0 ? "" : ""; //String.format("%d" + resources.getString(R.string.format_minutes), minutes);
+            amountString = hoursString + " " + minutesString;
             timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +
                     TIME_FORMAT.format(sleepEvent.getDate());
             dateString = DATE_FORMAT.format(sleepEvent.getDate());
@@ -211,24 +244,11 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
 
         holder.amountText.setText(amountString);
         holder.timeText.setText(timeString);
-        holder.dateText.setText(dateString);
+//        holder.dateText.setText(dateString);
+        holder.dateText.setText("");
         if (iconResource != 0) holder.eventIcon.setImageResource(iconResource);
 
         return view;
-
-//        final Event childView = (Event) getChild(groupPosition, childPosition);
-//
-//        if (convertView == null) {
-//            LayoutInflater inflater = (LayoutInflater) this.mContext
-//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            convertView = inflater.inflate(R.layout.list_item, null);
-//        }
-//
-//        TextView textView = (TextView) convertView
-//                .findViewById(R.id.list_item_time_text);
-//
-//        textView.setText(childView.toString());
-//        return convertView;
     }
 
     @Override
@@ -241,8 +261,18 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
         super.registerDataSetObserver(observer);
     }
 
-    private class ViewHolder {
+    public int getEventId(int groupPosition, int childPosition) {
+        Event event = (Event) getChild(groupPosition, childPosition);
+        return mEvents.indexOf(event);
+    }
+
+    private class ChildViewHolder {
         ImageView eventIcon;
         TextView amountText, timeText, dateText;
+    }
+
+    private class GroupViewHolder {
+        ImageView drinkEventIcon, eatEventIcon, sleepEventIcon;
+        TextView dateText, drinkEventText, eatEventText, sleepEventText;
     }
 }

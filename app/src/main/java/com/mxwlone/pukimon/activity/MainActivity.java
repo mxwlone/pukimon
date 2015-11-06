@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.mxwlone.pukimon.EventAdapter;
 import com.mxwlone.pukimon.ExpandableEventAdapter;
 import com.mxwlone.pukimon.R;
+import com.mxwlone.pukimon.domain.DaySummary;
 import com.mxwlone.pukimon.domain.DrinkEvent;
 import com.mxwlone.pukimon.domain.EatEvent;
 import com.mxwlone.pukimon.domain.Event;
@@ -54,14 +55,16 @@ public class MainActivity extends FragmentActivity {
         mListView = (ExpandableListView) findViewById(R.id.listView);
         mListView.setAdapter(mAdapter);
 
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                editEventFromList(position);
-//            }
-//        });
-//
-//        registerForContextMenu(this.mListView);
+        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Event event = (Event) mAdapter.getChild(groupPosition, childPosition);
+                editEventFromList(event);
+                return true;
+            }
+        });
+
+        registerForContextMenu(this.mListView);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -74,20 +77,35 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()) {
-            case R.id.context_menu_edit_item:
-                editEventFromList((int) info.id);
-                return true;
-            case R.id.context_menu_delete_item:
-                return deleteEventFromList((int) info.id);
-            default:
-                return super.onContextItemSelected(item);
+        ExpandableListView.ExpandableListContextMenuInfo info =
+                (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+            // do something with parent
+
+        } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            Event event = (Event) mAdapter.getChild(groupPosition, childPosition);
+
+            switch (item.getItemId()) {
+                case R.id.context_menu_edit_item:
+                    editEventFromList(event);
+                    return true;
+                case R.id.context_menu_delete_item:
+                    return deleteEventFromList(event);
+                default:
+                    return super.onContextItemSelected(item);
+            }
         }
+
+        return super.onContextItemSelected(item);
     }
 
-    private Boolean deleteEventFromList(int position) {
-        Event event = mEvents.get(position);
+    private Boolean deleteEventFromList(Event event) {
+//        Event event = mEvents.get(position);
         Log.d(TAG, String.format("Delete %s with id %d", event.getClass().getSimpleName(), event.getId()));
 
         PukimonDbHelper dbHelper = new PukimonDbHelper(getApplicationContext());
@@ -105,8 +123,8 @@ public class MainActivity extends FragmentActivity {
             selection = EatEventEntry._ID + " LIKE ?";
             tableName = EatEventEntry.TABLE_NAME;
         } else {
-            Log.d(TAG, String.format("Event at position %d does not have type %s or %s or %s. " +
-                    "Delete failed.", position, DrinkEvent.class.getSimpleName(),
+            Log.d(TAG, String.format("Event %d does not have type %s or %s or %s. " +
+                    "Delete failed.", DrinkEvent.class.getSimpleName(),
                     SleepEvent.class.getSimpleName(), EatEvent.class.getSimpleName()));
             return false;
         }
@@ -121,8 +139,8 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 
-    private void editEventFromList(int position) {
-        Event event = mEvents.get(position);
+    private void editEventFromList(Event event) {
+//        Event event = mEvents.get(position);
         Log.d(TAG, String.format("Edit %s with id %d", event.getClass().getSimpleName(), event.getId()));
 
         Intent intent = new Intent(MainActivity.this, NewEventActivity.class);
@@ -148,13 +166,24 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.listView) {
-//            ListView listView = (ListView) v;
-//            AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) menuInfo;
-//            Event event = (Event) listView.getItemAtPosition(acmi.position);
+        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
 
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.context_menu, menu);
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+        MenuInflater inflater = getMenuInflater();
+
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+            DaySummary daySummary = (DaySummary) mAdapter.getGroup(groupPosition);
+            String title = daySummary.getDate();
+            menu.setHeaderTitle(title);
+            inflater.inflate(R.menu.context_menu_group, menu);
+
+        } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            Event event = (Event) mAdapter.getChild(groupPosition, childPosition);
+            menu.setHeaderTitle(event.toString());
+            inflater.inflate(R.menu.context_menu_child, menu);
         }
     }
 

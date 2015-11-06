@@ -25,10 +25,12 @@
     <string name="context_menu_edit_item">Bearbeiten</string>
 
     <!-- other -->
-    <string name="format_hour">%d Stunde</string>
-    <string name="format_hours">%d Stunden</string>
-    <string name="format_minute">%d Minute</string>
-    <string name="format_minutes">%d Minuten</string>
+    <string name="format_hour">Stunde</string>
+    <string name="format_hours">Stunden</string>
+    <string name="format_minute">Minute</string>
+    <string name="format_minutes">Minuten</string>
     <string name="format_milliliters">"ml"</string>
     <string name="format_gram">g</string>
+    <string name="today">Heute</string>
+    <string name="yesterday">Gestern</string>
 </resources>
