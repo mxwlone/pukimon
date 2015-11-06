@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.mxwlone.pukimon.R;
-import com.mxwlone.pukimon.domain.DrinkEvent;
-import com.mxwlone.pukimon.domain.EatEvent;
-import com.mxwlone.pukimon.domain.SleepEvent;
+import com.mxwlone.pukimon.model.DrinkEvent;
+import com.mxwlone.pukimon.model.EatEvent;
+import com.mxwlone.pukimon.model.SleepEvent;
 import com.mxwlone.pukimon.fragment.DrinkEventFragment;
 import com.mxwlone.pukimon.fragment.EatEventFragment;
 import com.mxwlone.pukimon.fragment.SleepEventFragment;

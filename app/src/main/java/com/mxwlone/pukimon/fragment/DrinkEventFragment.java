@@ -75,8 +75,21 @@ public class DrinkEventFragment extends Fragment {
         }
 
         Calendar calendar = Calendar.getInstance();
-        if (date == null)
+        if (date == null) {
+            int interval = TimePickerFragment.getInterval();
+            int minute = calendar.get(Calendar.MINUTE);
+
+            // round minute to match the interval
+            if ((minute % interval) < (interval - minute % interval)) {
+                minute = minute - (minute % interval);
+            } else {
+                minute = minute + (interval - minute % interval);
+                calendar.add(Calendar.HOUR_OF_DAY, 1);
+            }
+
+            calendar.set(Calendar.MINUTE, minute);
             date = calendar.getTime();
+        }
 
         Log.d(TAG, "current values:");
         Log.d(TAG, "id: " + mId);

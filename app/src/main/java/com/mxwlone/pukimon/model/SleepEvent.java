@@ -1,4 +1,4 @@
-package com.mxwlone.pukimon.domain;
+package com.mxwlone.pukimon.model;
 
 import java.util.Date;
 

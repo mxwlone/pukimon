@@ -3,7 +3,6 @@ package com.mxwlone.pukimon;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.DataSetObserver;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +10,15 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mxwlone.pukimon.domain.DaySummary;
-import com.mxwlone.pukimon.domain.DrinkEvent;
-import com.mxwlone.pukimon.domain.EatEvent;
-import com.mxwlone.pukimon.domain.Event;
-import com.mxwlone.pukimon.domain.SleepEvent;
-
-import org.w3c.dom.Text;
+import com.mxwlone.pukimon.model.DaySummary;
+import com.mxwlone.pukimon.model.DrinkEvent;
+import com.mxwlone.pukimon.model.EatEvent;
+import com.mxwlone.pukimon.model.Event;
+import com.mxwlone.pukimon.model.SleepEvent;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;

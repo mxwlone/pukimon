@@ -74,10 +74,28 @@ public class SleepEventFragment extends Fragment {
         }
 
         Calendar calendar = Calendar.getInstance();
-        if (fromDate == null)
-            fromDate = calendar.getTime();
-        if (toDate == null)
-            toDate = calendar.getTime();
+
+        if (fromDate == null || toDate == null) {
+            Date date;
+            int interval = TimePickerFragment.getInterval();
+            int minute = calendar.get(Calendar.MINUTE);
+
+            // round minute to match the interval
+            if ((minute % interval) < (interval - minute % interval)) {
+                minute = minute - (minute % interval);
+            } else {
+                minute = minute + (interval - minute % interval);
+                calendar.add(Calendar.HOUR_OF_DAY, 1);
+            }
+
+            calendar.set(Calendar.MINUTE, minute);
+            date = calendar.getTime();
+
+            if (fromDate == null)
+                fromDate = date;
+            if (toDate == null)
+                toDate = date;
+        }
 
         Log.d(TAG, "current values:");
         Log.d(TAG, "id: " + mId);

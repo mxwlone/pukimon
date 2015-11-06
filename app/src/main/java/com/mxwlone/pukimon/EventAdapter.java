@@ -9,10 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mxwlone.pukimon.domain.DrinkEvent;
-import com.mxwlone.pukimon.domain.EatEvent;
-import com.mxwlone.pukimon.domain.Event;
-import com.mxwlone.pukimon.domain.SleepEvent;
+import com.mxwlone.pukimon.model.DrinkEvent;
+import com.mxwlone.pukimon.model.EatEvent;
+import com.mxwlone.pukimon.model.Event;
+import com.mxwlone.pukimon.model.SleepEvent;
 
 import java.text.DateFormat;
 import java.util.List;

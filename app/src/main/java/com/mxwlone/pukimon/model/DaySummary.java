@@ -1,4 +1,4 @@
-package com.mxwlone.pukimon.domain;
+package com.mxwlone.pukimon.model;
 
 /**
  * Created by maxwel on 22.09.2015.
