@@ -19,7 +19,7 @@
         android:layout_below="@id/group_item_date_text"
         android:layout_alignStart="@id/group_item_date_text"
         android:layout_marginEnd="4dp"
-        android:src="@drawable/bottle" />
+        android:src="@drawable/bottle_small" />
 
     <TextView android:id="@+id/group_item_drink_event_text"
         android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         android:layout_toRightOf="@id/group_item_drink_event_text"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
-        android:src="@drawable/eat" />
+        android:src="@drawable/eat_small" />
 
     <TextView android:id="@+id/group_item_eat_event_text"
         android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
         android:layout_toRightOf="@id/group_item_eat_event_text"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
-        android:src="@drawable/sleep" />
+        android:src="@drawable/sleep_small" />
 
     <TextView android:id="@+id/group_item_sleep_event_text"
         android:layout_width="wrap_content"

@@ -167,11 +167,11 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
             dateText = resources.getString(R.string.yesterday);
 
         holder.dateText.setText(dateText);
-        holder.drinkEventIcon.setImageResource(R.drawable.bottle);
+//        holder.drinkEventIcon.setImageResource(R.drawable.bottle_small);
         holder.drinkEventText.setText(String.valueOf(daySummary.getDrinkTotal()) + resources.getString(R.string.format_milliliters));
-        holder.eatEventIcon.setImageResource(R.drawable.eat);
+//        holder.eatEventIcon.setImageResource(R.drawable.eat);
         holder.eatEventText.setText(String.valueOf(daySummary.getEatTotal()) + resources.getString(R.string.format_gram));
-        holder.sleepEventIcon.setImageResource(R.drawable.sleep);
+//        holder.sleepEventIcon.setImageResource(R.drawable.sleep);
 //        holder.sleepEventText.setText(String.valueOf(daySummary.getSleepMinutesTotal()) + " " + resources.getString(R.string.format_minutes));
         holder.sleepEventText.setText(Util.formatHoursString(daySummary.getSleepMinutesTotal()));
 
