@@ -2,6 +2,7 @@ package com.mxwlone.pukimon.fragment;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mxwlone.pukimon.R;
+import com.mxwlone.pukimon.Util;
 import com.mxwlone.pukimon.picker.DatePickerFragment;
 import com.mxwlone.pukimon.picker.TimePickerFragment;
 import com.mxwlone.pukimon.sql.PukimonContract.SleepEventEntry;
@@ -76,20 +78,8 @@ public class SleepEventFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
 
         if (fromDate == null || toDate == null) {
-            Date date;
-            int interval = TimePickerFragment.getInterval();
-            int minute = calendar.get(Calendar.MINUTE);
 
-            // round minute to match the interval
-            if ((minute % interval) < (interval - minute % interval)) {
-                minute = minute - (minute % interval);
-            } else {
-                minute = minute + (interval - minute % interval);
-                calendar.add(Calendar.HOUR_OF_DAY, 1);
-            }
-
-            calendar.set(Calendar.MINUTE, minute);
-            date = calendar.getTime();
+            Date date = Util.getIntervalRoundedDate(calendar, TimePickerFragment.getInterval());
 
             if (fromDate == null)
                 fromDate = date;
@@ -133,11 +123,12 @@ public class SleepEventFragment extends Fragment {
                     DialogFragment dialogFragment = new TimePickerFragment();
                     Bundle bundle = new Bundle();
                     try {
-                        Date currentDate = TIME_FORMAT.parse(mEditTextFromTime.getText().toString());
-                        bundle.putLong("date", currentDate.getTime());
+                        Date selectedDate = TIME_FORMAT.parse(mEditTextFromTime.getText().toString());
+                        bundle.putLong("selectedDate", selectedDate.getTime());
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    bundle.putLong("currentDate", new Date().getTime());
                     bundle.putInt("view", R.id.editTextFromTime);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getActivity().getFragmentManager(), "timePicker");

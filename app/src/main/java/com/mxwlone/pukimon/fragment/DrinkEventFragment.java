@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mxwlone.pukimon.R;
+import com.mxwlone.pukimon.Util;
 import com.mxwlone.pukimon.picker.DatePickerFragment;
 import com.mxwlone.pukimon.picker.TimePickerFragment;
 import com.mxwlone.pukimon.sql.PukimonContract.DrinkEventEntry;
@@ -76,19 +77,7 @@ public class DrinkEventFragment extends Fragment {
 
         Calendar calendar = Calendar.getInstance();
         if (date == null) {
-            int interval = TimePickerFragment.getInterval();
-            int minute = calendar.get(Calendar.MINUTE);
-
-            // round minute to match the interval
-            if ((minute % interval) < (interval - minute % interval)) {
-                minute = minute - (minute % interval);
-            } else {
-                minute = minute + (interval - minute % interval);
-                calendar.add(Calendar.HOUR_OF_DAY, 1);
-            }
-
-            calendar.set(Calendar.MINUTE, minute);
-            date = calendar.getTime();
+            date = Util.getIntervalRoundedDate(calendar, TimePickerFragment.getInterval());
         }
 
         Log.d(TAG, "current values:");
@@ -130,11 +119,12 @@ public class DrinkEventFragment extends Fragment {
                     DialogFragment dialogFragment = new TimePickerFragment();
                     Bundle bundle = new Bundle();
                     try {
-                        Date currentDate = TIME_FORMAT.parse(mEditTextTime.getText().toString());
-                        bundle.putLong("date", currentDate.getTime());
+                        Date selectedDate = TIME_FORMAT.parse(mEditTextTime.getText().toString());
+                        bundle.putLong("selectedDate", selectedDate.getTime());
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    bundle.putLong("currentDate", new Date().getTime());
                     bundle.putInt("view", R.id.drinkEventEditTextTime);
                     dialogFragment.setArguments(bundle);
                     dialogFragment.show(getActivity().getFragmentManager(), "timePicker");

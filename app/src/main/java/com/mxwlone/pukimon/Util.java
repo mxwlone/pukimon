@@ -3,10 +3,12 @@ package com.mxwlone.pukimon;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mxwlone.pukimon.picker.TimePickerFragment;
 import com.mxwlone.pukimon.sql.PukimonContract;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
 
@@ -146,6 +148,22 @@ public class Util {
             return String.valueOf(hours) + ":" + minutesStr + " " +
                     App.getContext().getResources().getString(R.string.format_hours);
         }
+    }
+
+    @NonNull
+    public static Date getIntervalRoundedDate(Calendar calendar, int interval) {
+        Date date;
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // round minute to match the interval
+        if ((minute % interval) < (interval - minute % interval))
+            minute = minute - (minute % interval);
+        else
+            minute = minute + (interval - minute % interval);
+
+        calendar.set(Calendar.MINUTE, minute);
+        date = calendar.getTime();
+        return date;
     }
 
 }

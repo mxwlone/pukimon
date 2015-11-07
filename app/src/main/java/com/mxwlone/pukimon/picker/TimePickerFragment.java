@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.mxwlone.pukimon.R;
 
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -28,14 +31,20 @@ public class TimePickerFragment extends DialogFragment
         Date date = null;
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.containsKey("date"))
-                date = new Date(bundle.getLong("date"));
+            if (bundle.containsKey("currentDate"))
+                date = new Date(bundle.getLong("currentDate"));
         }
 
         Calendar c = Calendar.getInstance();
         if (date != null) c.setTime(date);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
+
+        // round minute to match the interval
+        if ((minute % interval) < (interval - minute % interval))
+            minute = minute - (minute % interval);
+        else
+            minute = minute + (interval - minute % interval);
 
         // Create a new instance of TimePickerDialog and return it
         return new DurationTimePickDialog(getActivity(), this, hour, minute,
@@ -78,10 +87,14 @@ public class TimePickerFragment extends DialogFragment
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            if (mCallback != null && mTimePicker!=null) {
-                mTimePicker.clearFocus();
-                mCallback.onTimeSet(mTimePicker, mTimePicker.getCurrentHour(),
-                        mTimePicker.getCurrentMinute()*increment);
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                if (mCallback != null && mTimePicker != null) {
+                    mTimePicker.clearFocus();
+                    mCallback.onTimeSet(mTimePicker, mTimePicker.getCurrentHour(),
+                            mTimePicker.getCurrentMinute() * increment);
+                }
+            } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+//                Toast.makeText(getActivity(), "canceled", Toast.LENGTH_LONG).show();
             }
         }
 
