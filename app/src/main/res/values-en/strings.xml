@@ -33,5 +33,6 @@
     <string name="format_gram">g</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="sleeping">Sleeping...</string>
 
 </resources>

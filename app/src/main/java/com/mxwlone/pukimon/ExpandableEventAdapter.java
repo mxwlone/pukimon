@@ -231,8 +231,9 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
             String minutesString = minutes != 0 ?
                     minutes == 1 ? String.format("%d " + resources.getString(R.string.format_minute), minutes) :
                             String.format("%d " + resources.getString(R.string.format_minutes), minutes) :
-                    hours != 0 ? "" : ""; //String.format("%d" + resources.getString(R.string.format_minutes), minutes);
-            amountString = hoursString + " " + minutesString;
+                    hours != 0 ? "" : resources.getString(R.string.sleeping); //String.format("%d" + resources.getString(R.string.format_minutes), minutes);
+            amountString = minutesString.equals(resources.getString(R.string.sleeping)) ? minutesString :
+                hoursString + " " + minutesString;
             timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +
                     TIME_FORMAT.format(sleepEvent.getDate());
             dateString = DATE_FORMAT.format(sleepEvent.getDate());
