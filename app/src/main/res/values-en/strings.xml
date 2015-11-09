@@ -34,5 +34,6 @@
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="sleeping">Sleeping...</string>
+    <string name="list_item_time_ago">%s ago</string>
 
 </resources>

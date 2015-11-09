@@ -7,10 +7,17 @@
     <ImageView android:id="@+id/list_item_event_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dp"
         android:src="@drawable/bottle" />
+
+    <TextView android:id="@+id/list_item_time_ago_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
     <TextView android:id="@+id/list_item_amount_text"
         android:layout_width="match_parent"

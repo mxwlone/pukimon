@@ -19,6 +19,7 @@ import com.mxwlone.pukimon.model.SleepEvent;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -193,6 +194,8 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
             holder.amountText = (TextView)view.findViewById(R.id.list_item_amount_text);
             holder.timeText = (TextView)view.findViewById(R.id.list_item_time_text);
             holder.dateText = (TextView)view.findViewById(R.id.list_item_date_text);
+            holder.timeAgoText = (TextView)view.findViewById(R.id.list_item_time_ago_text);
+
             view.setTag(holder);
         } else {
             view = convertView;
@@ -246,6 +249,15 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
         holder.dateText.setText("");
         if (iconResource != 0) holder.eventIcon.setImageResource(iconResource);
 
+        // if child belongs to todays day summary, show time ago field
+        Date now = Calendar.getInstance().getTime();
+        DaySummary daySummary = (DaySummary) getGroup(groupPosition);
+        if (daySummary.getDate().equals(Util.getDateString(now))) {
+//            long differenceInMinutes = (now.getTime() - event.getDate().getTime()) / (1000 * 60);
+            int differenceInMinutes = Util.getDifferenceInMinutes(event.getDate(), now);
+            holder.timeAgoText.setText(String.format(resources.getString(R.string.list_item_time_ago), Util.formatHoursString(differenceInMinutes)));
+        }
+
         return view;
     }
 
@@ -266,7 +278,7 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
 
     private class ChildViewHolder {
         ImageView eventIcon;
-        TextView amountText, timeText, dateText;
+        TextView amountText, timeText, dateText, timeAgoText;
     }
 
     private class GroupViewHolder {
