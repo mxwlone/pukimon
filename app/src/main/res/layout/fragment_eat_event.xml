@@ -54,13 +54,14 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/eatEventLabelAmount"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="@string/text_view_amount_text"
@@ -71,11 +72,27 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:layout_toRightOf="@id/eatEventLabelAmount"
             android:ems="10"
-            android:id="@+id/eatEventEditTextAmount"
-            android:password="false" />
+            android:id="@+id/eatEventEditTextAmount" />
 
-    </LinearLayout>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="+100"
+            android:id="@+id/eatEventAdd100Button" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+50"
+            android:layout_toLeftOf="@id/eatEventAdd100Button"
+            android:id="@+id/eatEventAdd50Button" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:orientation="horizontal"

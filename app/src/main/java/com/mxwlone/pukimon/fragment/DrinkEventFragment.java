@@ -139,6 +139,34 @@ public class DrinkEventFragment extends Fragment {
                 okButtonClicked();
             }
         });
+
+        Button add50Button = (Button) getActivity().findViewById(R.id.drinkEventAdd50Button);
+        add50Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int amount;
+                if (!Util.isNumeric(mEditTextAmount.getText().toString()))
+                    amount = 0;
+                else
+                    amount = Integer.parseInt(mEditTextAmount.getText().toString());
+
+                mEditTextAmount.setText(String.valueOf(amount + 50));
+            }
+        });
+
+        Button add100Button = (Button) getActivity().findViewById(R.id.drinkEventAdd100Button);
+        add100Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int amount;
+                if (!Util.isNumeric(mEditTextAmount.getText().toString()))
+                    amount = 0;
+                else
+                    amount = Integer.parseInt(mEditTextAmount.getText().toString());
+
+                mEditTextAmount.setText(String.valueOf(amount + 100));
+            }
+        });
 }
 
     private void okButtonClicked() {

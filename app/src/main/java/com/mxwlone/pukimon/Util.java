@@ -13,7 +13,9 @@ import com.mxwlone.pukimon.sql.PukimonContract;
 import com.mxwlone.pukimon.sql.PukimonDbHelper;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -165,5 +167,21 @@ public class Util {
         date = calendar.getTime();
         return date;
     }
+
+    public static boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+//    public static boolean isNumeric(String str) {
+//        NumberFormat formatter = NumberFormat.getInstance();
+//        ParsePosition pos = new ParsePosition(0);
+//        formatter.parse(str, pos);
+//        return str.length() == pos.getIndex();
+//    }
 
 }

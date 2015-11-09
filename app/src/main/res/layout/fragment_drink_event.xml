@@ -54,13 +54,14 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/drinkEventLabelAmount"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="@string/text_view_amount_text"
@@ -73,9 +74,27 @@
             android:inputType="number"
             android:ems="10"
             android:id="@+id/drinkEventEditTextAmount"
-            android:password="false" />
+            android:layout_toRightOf="@+id/drinkEventLabelAmount"
+            />
 
-    </LinearLayout>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="+100"
+            android:id="@+id/drinkEventAdd100Button" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+50"
+            android:layout_toLeftOf="@id/drinkEventAdd100Button"
+            android:id="@+id/drinkEventAdd50Button" />
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:orientation="horizontal"
@@ -84,10 +103,12 @@
         android:padding="10dp">
 
         <Button
+            android:id="@+id/drinkEventCancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_cancel_text"
-            android:onClick="cancelButtonClicked"/>
+            android:onClick="cancelButtonClicked"
+            />
 
         <Button android:id="@+id/drinkEventOkButton"
             android:layout_width="wrap_content"
@@ -95,7 +116,8 @@
             android:text="@string/button_ok_text"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:backgroundTint="@color/blue_normal" />
+            android:backgroundTint="@color/blue_normal"
+            android:layout_alignBaseline="@id/drinkEventCancelButton"/>
 
     </RelativeLayout>
 
