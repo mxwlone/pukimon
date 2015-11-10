@@ -236,11 +236,17 @@ public class ExpandableEventAdapter extends BaseExpandableListAdapter {
                             String.format("%d " + resources.getString(R.string.format_minutes), minutes) :
                     hours != 0 ? "" : resources.getString(R.string.sleeping); //String.format("%d" + resources.getString(R.string.format_minutes), minutes);
             amountString = minutesString.equals(resources.getString(R.string.sleeping)) ? minutesString :
-                hoursString + " " + minutesString;
-            timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +
-                    TIME_FORMAT.format(sleepEvent.getDate());
+                hoursString != "" ? hoursString + " " + minutesString :
+                    minutesString;
+
             dateString = DATE_FORMAT.format(sleepEvent.getDate());
             iconResource = R.drawable.sleep;
+
+            if (sleepEvent.getFromDate().getTime() != sleepEvent.getDate().getTime())
+                timeString = TIME_FORMAT.format(sleepEvent.getFromDate()) + " - " +
+                        TIME_FORMAT.format(sleepEvent.getDate());
+            else
+                timeString = resources.getString(R.string.str_since) + " " + TIME_FORMAT.format(sleepEvent.getFromDate());
         }
 
         holder.amountText.setText(amountString);

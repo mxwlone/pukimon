@@ -75,10 +75,8 @@ public class SleepEventFragment extends Fragment {
                 toDate = new Date(extras.getLong("toDate"));
         }
 
-        Calendar calendar = Calendar.getInstance();
-
         if (fromDate == null || toDate == null) {
-
+            Calendar calendar = Calendar.getInstance();
             Date date = Util.getIntervalRoundedDate(calendar, TimePickerFragment.getInterval());
 
             if (fromDate == null)
@@ -94,7 +92,9 @@ public class SleepEventFragment extends Fragment {
 
         mEditTextDate.setText(DATE_FORMAT.format(toDate));
         mEditTextFromTime.setText(TIME_FORMAT.format(fromDate));
-        mEditTextToTime.setText(TIME_FORMAT.format(toDate));
+
+        if (fromDate.getTime() != toDate.getTime())
+            mEditTextToTime.setText(TIME_FORMAT.format(toDate));
 
         mEditTextDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -170,6 +170,9 @@ public class SleepEventFragment extends Fragment {
         String dateString = mEditTextDate.getText().toString();
         String fromTimeString = mEditTextFromTime.getText().toString();
         String toTimeString = mEditTextToTime.getText().toString();
+
+        if(toTimeString.equals(""))
+            toTimeString = fromTimeString;
 
         Log.d(TAG, "new values:");
         Log.d(TAG, "dateString: " + dateString);

@@ -33,6 +33,7 @@
     <string name="format_gram">g</string>
     <string name="today">Heute</string>
     <string name="yesterday">Gestern</string>
-    <string name="sleeping">Schläft...</string>
+    <string name="sleeping">Schläft…</string>
     <string name="list_item_time_ago">vor %s</string>
+    <string name="str_since">Seit</string>
 </resources>
