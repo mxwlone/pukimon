@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mxwlone.pukimon.R;
@@ -73,6 +74,9 @@ public class EatEventFragment extends Fragment {
                 amount = extras.getInt("amount");
             if (extras.containsKey("date"))
                 date = new Date(extras.getLong("date"));
+        } else {
+            // hide date, if not editing an existing event
+            ((LinearLayout) getActivity().findViewById(R.id.eatEventLayoutDate)).setVisibility(View.GONE);
         }
 
         Calendar calendar = Calendar.getInstance();

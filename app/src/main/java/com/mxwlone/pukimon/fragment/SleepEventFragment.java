@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mxwlone.pukimon.R;
@@ -73,6 +74,9 @@ public class SleepEventFragment extends Fragment {
                 fromDate = new Date(extras.getLong("fromDate"));
             if (extras.containsKey("toDate"))
                 toDate = new Date(extras.getLong("toDate"));
+        } else {
+            // hide date, if not editing an existing event
+            ((LinearLayout) getActivity().findViewById(R.id.sleepEventLayoutDate)).setVisibility(View.GONE);
         }
 
         if (fromDate == null || toDate == null) {
